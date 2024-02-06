@@ -3,7 +3,7 @@ import { ClipLoader } from "react-spinners";
 import { IconType } from "react-icons";
 
 interface ITransparentBtnProps {
-  text: string;
+  text?: string;
   className?: string;
   Icon?: IconType;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
