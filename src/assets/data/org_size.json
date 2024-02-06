@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Small 1-50 employees",
+    "value": "1-50 employees"
+  },
+  {
+    "label": "Medium 51-500 employees",
+    "value": "51-500 employees"
+  },
+  {
+    "label": "Large 501-5000 employees",
+    "value": "501-5000 employees"
+  },
+  {
+    "label": "Enterprise 5000+ employees",
+    "value": "5001+ employees"
+  }
+]

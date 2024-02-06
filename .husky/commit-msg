@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+
+yarn run format && npx validate-branch-name && npx  --no -- commitlint --edit ${1} && git add -A 
+
+
