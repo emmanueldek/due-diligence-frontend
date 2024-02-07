@@ -179,7 +179,6 @@ export const SelectInput = ({
           defaultValue={defaultValue}
           onChange={onChange}
           onBlur={onBlur}
-          placeholder="Select option"
           className={`w-full rounded-md border-grey-100 border-[1px] h-[40px] pl-4 outline-none bg-transparent text-s text-darkGrey cursor-pointer appearance-none pr-8 focus:border-purple placeholder:text-grey-200 placeholder:text-sm text-sm  ${className}`}
         >
           <option value={""} className="bg-white cursor-pointer placeholder:text-sm text-grey-50">
