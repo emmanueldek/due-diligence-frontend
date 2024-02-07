@@ -26,7 +26,7 @@ interface IInitialData {
   organizationName?: string;
   executiveDescription?: string;
   organizationSize?: string;
-  executiveAvatar?: string
+  executiveAvatar?: string;
   industry?: string;
   location?: string;
   country?: string;
@@ -235,11 +235,7 @@ const Profile: React.FC<IActionProps> = ({ next, prev, setData, execDocID, sugDo
       <div className="flex space-x-3 mt-5">
         {getPrev?.profile?.executiveAvatar ? (
           <div className="w-[64px] h-[64px] rounded-lg overflow-hidden ">
-            <img
-              src={getPrev?.profile?.executiveAvatar}
-              alt=""
-              className="object-cover w-[64px] h-[64px]"
-            />
+            <img src={getPrev?.profile?.executiveAvatar} alt="" className="object-cover w-[64px] h-[64px]" />
           </div>
         ) : (
           <div className="rounded-lg overflow-hidden w-[64px] h-[64px] mt-3 text-[700] flex justify-center items-center bg-[#f59e0b] text-4xl text-white">

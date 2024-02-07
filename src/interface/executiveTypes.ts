@@ -80,7 +80,7 @@ export interface IProfileProps {
   executiveDescription?: string;
   organizationName?: string;
   organizationDescription?: string;
-  executiveAvatar?:string
+  executiveAvatar?: string;
   organizationSize?: string;
   executivePosition?: string;
   position?: string;

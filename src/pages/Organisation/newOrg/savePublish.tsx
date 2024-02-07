@@ -133,7 +133,13 @@ const SavePublish: React.FC<IDraftProps> = ({ onClose, data, setData, check, exe
 
   return (
     <Modal
-      title={`${check === "executive publish" ? "Publish Executives" : check === "organization publish" ? "Publish Organization" : "Publish changes"}`}
+      title={`${
+        check === "executive publish"
+          ? "Publish Executives"
+          : check === "organization publish"
+          ? "Publish Organization"
+          : "Publish changes"
+      }`}
       className="w-[416px]"
       onClose={onClose}
     >

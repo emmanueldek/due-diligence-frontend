@@ -81,7 +81,7 @@ export interface IProfileProps {
   organizationName?: string;
   organizationDescription?: string;
   profileLogo?: string;
-  organizationLogo?:string
+  organizationLogo?: string;
   organizationSize?: string;
   executivePosition?: string;
   position?: string;

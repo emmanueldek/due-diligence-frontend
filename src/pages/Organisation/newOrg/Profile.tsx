@@ -24,7 +24,7 @@ interface IInitialData {
   organizationName?: string;
   organizationDescription?: string;
   organizationSize?: string;
-  organizationLogo?:string;
+  organizationLogo?: string;
   industry?: string;
   location?: string;
   country?: string;
@@ -233,9 +233,7 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
         {getPrev?.theOrganization?.profile?.organizationLogo ? (
           <div className="w-[64px] h-[64px] rounded-lg overflow-hidden">
             <img
-              src={
-                getPrev?.theOrganization?.profile?.organizationLogo
-              }
+              src={getPrev?.theOrganization?.profile?.organizationLogo}
               alt=""
               className="object-cover w-[64px] h-[64px]"
             />
