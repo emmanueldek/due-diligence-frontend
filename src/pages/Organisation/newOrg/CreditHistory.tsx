@@ -212,7 +212,7 @@ const CreditHistory: React.FC<IactionProps> = ({ next, prev, data, setData, exec
   }
   return (
     <div>
-      <p className="font-[700] text-2xl">CreditHistory</p>
+      <p className="font-[700] text-2xl">Credit History</p>
 
       <div className="space-y-2">
         {dataList?.map((data, i) => (
@@ -262,7 +262,7 @@ const CreditHistory: React.FC<IactionProps> = ({ next, prev, data, setData, exec
             id="assetsLiquidated"
             isRequired={true}
             label="Asset Liquidated"
-            placeholder="ENter asset"
+            placeholder="Enter asset"
             value={values.assetsLiquidated}
             error={getError("assetsLiquidated")}
             type="text"
@@ -366,7 +366,7 @@ const CreditHistory: React.FC<IactionProps> = ({ next, prev, data, setData, exec
               onClick={() => handleModal(2)}
               className="bg-grey-900 text-white rounded-md px-3 py-2 flex active:bg-grey-200 items-center justify-center"
             >
-              <p>Publish Executive</p>
+              <p>Publish Organization</p>
             </button>
           </div>
         </div>

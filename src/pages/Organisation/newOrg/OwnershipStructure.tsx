@@ -255,7 +255,7 @@ const OwnershipStructure: React.FC<IactionProps> = ({ next, prev, data, setData,
               className="bg-grey-900 text-white rounded-md px-3 py-2 flex active:bg-grey-200 items-center justify-center"
               onClick={() => handleModal(2)}
             >
-              <p>Publish Executive</p>
+              <p>Publish Organization</p>
             </button>
           </div>
         </div>
@@ -266,7 +266,7 @@ const OwnershipStructure: React.FC<IactionProps> = ({ next, prev, data, setData,
             onClose={handleClose}
             next={next}
             setData={setData}
-            check="executive publish"
+            check="organization publish"
             execDocID={execDocID}
           />
         )}

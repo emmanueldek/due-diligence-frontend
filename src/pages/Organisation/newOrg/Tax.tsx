@@ -352,7 +352,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
               onClick={() => handleModal(2)}
               className="bg-grey-900 text-white rounded-md px-3 py-2 flex active:bg-grey-200 items-center justify-center"
             >
-              <p>Publish Executive</p>
+              <p>Publish Organization</p>
             </button>
           </div>
         </div>
