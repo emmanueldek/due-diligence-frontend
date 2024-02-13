@@ -18,6 +18,11 @@ interface IInitialData {
   ownershipType?: string;
   governanceStructure?: string;
   shareHolders: IShareHolderProps[];
+  ownershipStructure?: {
+    ownershipType: string;
+    governanceStructure: string;
+    shareHolders: IShareHolderProps[];
+  };
 }
 
 interface IactionProps {
@@ -45,18 +50,25 @@ const OwnershipStructure: React.FC<IactionProps> = ({ next, prev, data, setData,
   );
 
   useEffect(() => {
-    if (owner?.data?.ownershipStructure && Object.keys(owner.data.ownershipStructure).length > 0) {
+    if (owner?.data?.ownershipStructure && owner.data.ownershipStructure.length > 0) {
       setOwnerData(owner?.data?.ownershipStructure);
     }
   }, [owner?.data?.ownershipStructure]);
+
+  useEffect(() => {
+    if (owner) {
+      setOwnerData(owner?.data?.ownershipStructure);
+    }
+  }, [owner]);
 
   const { mutate: postOwner } = useMutation(updateOrg, {
     onError: (error) => {
       console.log(error);
       Toast.error("Management not saved");
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       Toast.success("Saved Management successfully");
+      console.log(data);
     },
   });
 
@@ -83,7 +95,7 @@ const OwnershipStructure: React.FC<IactionProps> = ({ next, prev, data, setData,
   const initialValues: IInitialData = {
     ownershipType: ownerData?.ownershipType || "",
     governanceStructure: ownerData?.governanceStructure || "",
-    shareHolders: data.ownershipStructure?.shareHolders || [{ name: "", percentage: 0 }],
+    shareHolders: ownerData?.shareHolders || [{ name: "", percentage: 0 }],
   };
 
   const handleClose = () => {
@@ -105,6 +117,8 @@ const OwnershipStructure: React.FC<IactionProps> = ({ next, prev, data, setData,
         data: ownershipData,
         execOrgDocId: execDocID,
       };
+      console.log(payload);
+
       postOwner(payload);
     }
   };
@@ -159,39 +173,41 @@ const OwnershipStructure: React.FC<IactionProps> = ({ next, prev, data, setData,
             name="ownershipType"
           />
         </div>
-        {values.shareHolders.map((shareHolder, index) => (
-          <div key={index} className="grid grid-cols-5 space-x-3 items-center ">
-            <div className="col-span-2">
-              <InputText
-                label="Name"
-                name={`shareHolders[${index}].name`}
-                id={`name-${index}`}
-                placeholder="Enter a Name"
-                value={shareHolder.name}
-                onChange={handleChange}
-                isRequired={true}
-                // error={getError(`shareHolders[${index}].name`)}
-              />
+        {values.shareHolders.map((shareHolder, index) => {
+          return (
+            <div key={index} className="grid grid-cols-5 space-x-3 items-center ">
+              <div className="col-span-2">
+                <InputText
+                  label="Name"
+                  name={`shareHolders[${index}].name`}
+                  id={`name-${index}`}
+                  placeholder="Enter a Name"
+                  value={shareHolder.name}
+                  onChange={handleChange}
+                  isRequired={true}
+                  // error={getError(`shareHolders[${index}].name`)}
+                />
+              </div>
+              <div className="col-span-2">
+                <InputText
+                  label="Percentage"
+                  name={`shareHolders[${index}].percentage`}
+                  id={`percentage-${index}`}
+                  placeholder="Enter a percentage value"
+                  value={shareHolder.percentage}
+                  // error={getError(`shareHolders[${index}].percentage`)}
+                  onChange={handleChange}
+                  isRequired={true}
+                />
+              </div>
+              {values.shareHolders.length > 1 && (
+                <button type="button" onClick={() => removeShareHolder(index)}>
+                  <IoRemoveCircleOutline />
+                </button>
+              )}
             </div>
-            <div className="col-span-2">
-              <InputText
-                label="Percentage"
-                name={`shareHolders[${index}].percentage`}
-                id={`percentage-${index}`}
-                placeholder="Enter a percentage value"
-                value={shareHolder.percentage}
-                // error={getError(`shareHolders[${index}].percentage`)}
-                onChange={handleChange}
-                isRequired={true}
-              />
-            </div>
-            {values.shareHolders.length > 1 && (
-              <button type="button" onClick={() => removeShareHolder(index)}>
-                <IoRemoveCircleOutline />
-              </button>
-            )}
-          </div>
-        ))}
+          );
+        })}
         <button type="button" onClick={addShareHolder} className="flex items-center space-x-1">
           <IoAddCircleOutline />
           <span>Add More</span>
