@@ -49,7 +49,7 @@ const SupplyChainInfo: React.FC<IactionProps> = ({ next, prev, data, setData, ex
   const { id } = useParams();
   const requestId = id || "";
   const [newNext, setNext] = useState(false);
-  const [file, setFile] = useState<string>("");
+  const [file, setFile] = useState<Array<string>>([]);
   const [dataTab, setDataTab] = useState<number | null>(null);
   const [dataList, setDataList] = useState<IOrganisationProps[]>(data.supplyChainInfo || []);
   const [check, setCheck] = useState<number | null>(null);
@@ -73,7 +73,7 @@ const SupplyChainInfo: React.FC<IactionProps> = ({ next, prev, data, setData, ex
     onSuccess: ({ data: uploadRes }) => {
       console.log(uploadRes);
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile((prev: any) => [...prev, uploadRes?.url]);
     },
 
     onError: (error) => {
@@ -123,9 +123,12 @@ const SupplyChainInfo: React.FC<IactionProps> = ({ next, prev, data, setData, ex
       console.error("Please select only one image");
       return;
     } else {
-      const imageFile = new FormData();
-      imageFile.append("file", e.target.files[0]);
-      postImage({ imageFile, flags: "organizationDocuments" });
+      let documentArray = Array.from(e.target.files);
+      documentArray.forEach((doc) => {
+        const imageFile = new FormData();
+        imageFile.append("file", doc);
+        postImage({ imageFile, flags: "organizationDocuments" });
+      });
     }
   };
 
@@ -145,7 +148,7 @@ const SupplyChainInfo: React.FC<IactionProps> = ({ next, prev, data, setData, ex
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
-        setFile("");
+        setFile([]);
       }
     }
   };
@@ -296,31 +299,35 @@ const SupplyChainInfo: React.FC<IactionProps> = ({ next, prev, data, setData, ex
         </div>
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
-          {file ? (
-            <div>
-              <div className="flex items-center space-x-3">
-                <div className="bg-grey-100 rounded w-[20%] h-[128px] flex items-center justify-center">
-                  <IoDocumentAttach size={50} color="#808080" />
-                </div>
-                <div
-                  className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
-                  onClick={() => setFile("")}
-                >
-                  <RiDeleteBin5Fill size={10} color="#ffffff" />
-                </div>
+          <div className="w-full">
+            <InputFile onChange={(e) => handleUploads(e)} />
+            {progressLoading && (
+              <div>
+                <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>
-              <p className="text-xs text-green-600 my-2">{file.slice(81)}</p>
-            </div>
-          ) : (
-            <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
-              {progressLoading && (
-                <div>
-                  <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
+          <div className="flex items-center space-x-3 mt-3">
+            {file.length > 0 &&
+              file.map((f: any, i: number) => {
+                return (
+                  <div className="">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-grey-100 rounded w-[100px] h-[128px] flex items-center justify-center">
+                        <IoDocumentAttach size={50} color="#808080" />
+                      </div>
+                      <div
+                        className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
+                        onClick={() => setFile((prev: any) => prev.filter((_: any, index: number) => index !== i))}
+                      >
+                        <RiDeleteBin5Fill size={10} color="#ffffff" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-green-600 my-2">{f.slice(90)}</p>
+                  </div>
+                );
+              })}
+          </div>
         </div>
 
         <button

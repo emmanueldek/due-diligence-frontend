@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { ClipLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 interface IOrganisationProps {
   type?: string;
@@ -49,7 +50,7 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
   const { id } = useParams();
   const requestId = id || "";
   const [newNext, setNext] = useState(false);
-  const [file, setFile] = useState<string | null>("");
+  const [file, setFile] = useState<Array<string>>([]);
   const [dataTab, setDataTab] = useState<number | null>(null);
   const [dataList, setDataList] = useState<IOrganisationProps[]>(data.insurance || []);
   const [check, setCheck] = useState<number | null>(null);
@@ -71,7 +72,7 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
   const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile((prev: any) => [...prev, uploadRes?.url]);
     },
 
     onError: (error) => {
@@ -119,32 +120,78 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
       console.error("Please select only one image");
       return;
     } else {
-      const imageFile = new FormData();
-      imageFile.append("file", e.target.files[0]);
-      postImage({ imageFile, flags: "organizationDocuments" });
+      let documentArray = Array.from(e.target.files);
+      documentArray.forEach((doc) => {
+        const imageFile = new FormData();
+        imageFile.append("file", doc);
+        postImage({ imageFile, flags: "organizationDocuments" });
+      });
     }
   };
 
+  // const onSubmit = async (data: IOrganisationProps) => {
+  //   const newData = {
+  //     ...data,
+  //     icDocuments: file,
+  //   };
+  //   if (dataTab !== null) {
+  //     // Update existing entry in the dataList
+  //     const updatedDataList = [...dataList];
+  //     updatedDataList[dataTab] = newData;
+  //     setDataList(updatedDataList);
+  //     setDataTab(null); // Clear the selected index
+  //   } else {
+  //     setDataList([...dataList, newData]);
+  //     if (checkAdd) {
+  //       setCheckAdd(false);
+  //       resetForm();
+  //       setFile([]);
+  //     }
+  //   }
+  // };
+
   const onSubmit = async (data: IOrganisationProps) => {
+    let isDataExist: boolean;
+
+    const checkIfDataExist: () => boolean = () => {
+      let res = false;
+      dataList.forEach((item) => {
+        if (item.type !== data.type) {
+          res = false;
+        } else {
+          res = true;
+        }
+      });
+      return res;
+    };
+
+    isDataExist = checkIfDataExist();
+    console.log(checkIfDataExist());
+
     const newData = {
       ...data,
       icDocuments: file,
     };
-    if (dataTab !== null) {
+    if (dataTab !== null && isDataExist) {
       // Update existing entry in the dataList
       const updatedDataList = [...dataList];
       updatedDataList[dataTab] = newData;
       setDataList(updatedDataList);
       setDataTab(null); // Clear the selected index
-    } else {
+      resetForm();
+      setFile([]);
+    } else if (dataTab === null && !isDataExist) {
       setDataList([...dataList, newData]);
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
-        setFile(null);
+        setFile([]);
       }
+    } else if (dataTab === null && isDataExist) {
+      toast.error("Data already exist");
     }
   };
+
   const initialValues: IInsuranceProps = {
     type: "",
     coverageAmount: "",
@@ -295,31 +342,34 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
         </div>
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
-          {file ? (
-            <div>
-              <div className="flex items-center space-x-3">
-                <div className="bg-grey-100 rounded w-[20%] h-[128px] flex items-center justify-center">
-                  <IoDocumentAttach size={50} color="#808080" />
-                </div>
-                <div
-                  className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
-                  onClick={() => setFile("")}
-                >
-                  <RiDeleteBin5Fill size={10} color="#ffffff" />
-                </div>
+          <div>
+            <InputFile onChange={(e) => handleUploads(e)} />
+            {progressLoading && (
+              <div>
+                <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>
-              <p className="text-xs text-green-600 my-2">{file.slice(81)}</p>
-            </div>
-          ) : (
-            <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
-              {progressLoading && (
-                <div>
-                  <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
+            )}
+          </div>
+
+          {file &&
+            file.map((f: any, i: number) => {
+              return (
+                <div key={i}>
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-grey-100 rounded w-[100px] h-[128px] flex items-center justify-center">
+                      <IoDocumentAttach size={50} color="#808080" />
+                    </div>
+                    <div
+                      className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
+                      onClick={() => setFile((prev) => prev.filter((_, index) => index !== i))}
+                    >
+                      <RiDeleteBin5Fill size={10} color="#ffffff" />
+                    </div>
+                  </div>
+                  <p className="text-xs text-green-600 my-2">{f.slice(90)}</p>
                 </div>
-              )}
-            </div>
-          )}
+              );
+            })}
         </div>
 
         <button

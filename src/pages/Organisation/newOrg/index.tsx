@@ -8,7 +8,7 @@ import Insurance from "./Insurance";
 import Reference from "./Reference";
 import { IDataProps } from "@/interface/userCreation";
 import Management from "./Management";
-import EnvironCompliance from "./EnvironCompliance";
+import CreditRating from "./CreditRating";
 import SupplyChainInfo from "./SupplyChainInfo";
 import OwnershipStructure from "./OwnershipStructure";
 import CreditHistory from "./CreditHistory";
@@ -30,7 +30,7 @@ const NewOrganisation: React.FC = () => {
     reference: [],
     financial: [],
     management: [],
-    environCompliance: [],
+    creditRating: [],
     supplyChainInfo: [],
     ownershipStructure: {},
     creditReport: [],
@@ -50,6 +50,7 @@ const NewOrganisation: React.FC = () => {
     }
     return null;
   });
+  console.log(getData);
   useEffect(() => {
     if (getData?.data && Object.keys(getData.data).length > 0) {
       setExecDocId(getData?.data?.theOrganization?.execOrgDocId);
@@ -64,10 +65,10 @@ const NewOrganisation: React.FC = () => {
     { name: "Credit History", value: 3 },
     { name: "Tax Compliance", value: 4 },
     { name: "Legal/ Regulatory", value: 5 },
-    { name: "Environmental Compliance", value: 6 },
-    { name: "Contractual Obligations", value: 7 },
+    // { name: "Credit Rating", value: 6 },
+    // { name: "Contractual Obligations", value: 7 },
     { name: "Insurance Coverage", value: 8 },
-    { name: "Supply Chain Information", value: 9 },
+    // { name: "Supply Chain Information", value: 9 },
     { name: "References/ Reputation", value: 10 },
     { name: "Ownership Structure", value: 11 },
   ];
@@ -155,7 +156,7 @@ const NewOrganisation: React.FC = () => {
         );
       case 6:
         return (
-          <EnvironCompliance
+          <CreditRating
             next={next}
             prev={prev}
             data={data}

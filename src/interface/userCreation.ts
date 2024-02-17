@@ -3,7 +3,7 @@ export interface IFinancialProps {
   audFinancials?: string;
   audBy?: string;
   source?: string;
-  fsDocuments?: string;
+  fsDocuments?: Array<string> | string;
 }
 export interface IInsuranceProps {
   type?: string;
@@ -40,11 +40,9 @@ export interface IContractProps {
   coDocuments?: string;
 }
 export interface IReferenceProps {
-  coverageAmount?: string;
-  type?: string;
-  coverageStatus?: string;
-  expiryDate?: string;
-  rrDocuments?: string;
+  name?: string;
+  referenceDate?: string;
+  rrDocuments?: Array<string>;
 }
 export interface IManagementProps {
   name?: string;
@@ -58,6 +56,14 @@ export interface IEnvironComplianceProps {
   outstandingCreditLine?: string;
   ecDocuments?: string;
 }
+export interface ICreditRating {
+  creditScore?: string;
+  reportingAgency?: string;
+  paymentHistory?: string;
+  outstandingCreditLine?: string;
+  ecDocuments?: string;
+}
+
 export interface ISupplyChainInfo {
   coverageAmount?: string;
   type?: string;
@@ -103,6 +109,7 @@ export interface IDataProps {
   financial?: IFinancialProps[];
   management?: IManagementProps[];
   environCompliance?: IEnvironComplianceProps[];
+  creditRating?: ICreditRating[];
   ownershipStructure?: IOwnerShipStructure;
   supplyChainInfo?: ISupplyChainInfo[];
 }

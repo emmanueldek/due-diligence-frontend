@@ -14,13 +14,13 @@ import { IoDocumentAttach } from "react-icons/io5";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { Circles, ProgressBar } from "react-loader-spinner";
 import { ClipLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 interface IOrganisationProps {
   year?: string;
   audFinancials?: string;
   audBy?: string;
   source?: string;
-  fsDocuments?: string;
 }
 
 interface IactionProps {
@@ -45,8 +45,8 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
   const requestId = id || "";
   const [dataTab, setDataTab] = useState<number | null>(null);
   const [newNext, setNext] = useState(false);
-  const [file, setFile] = useState<string>("");
-  const [dataList, setDataList] = useState<IOrganisationProps[]>(data.financial || []);
+  const [file, setFile] = useState<Array<string>>([]);
+  const [dataList, setDataList] = useState<IFinancialProps[]>(data.financial || []);
   const [check, setCheck] = useState<number | null>(null);
   const [open, setOpen] = useState<number | null>(null);
   const financialData = { financial: dataList };
@@ -66,7 +66,9 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
   const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile((prev: any) => {
+        return [...prev, uploadRes?.url];
+      });
     },
 
     onError: (error) => {
@@ -112,9 +114,12 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
       console.error("Please select only one image");
       return;
     } else {
-      const imageFile = new FormData();
-      imageFile.append("file", e.target.files[0]);
-      postImage({ imageFile, flags: "organizationDocuments" });
+      let documentArray = Array.from(e.target.files);
+      documentArray.forEach((doc) => {
+        const imageFile = new FormData();
+        imageFile.append("file", doc);
+        postImage({ imageFile, flags: "organizationDocuments" });
+      });
     }
   };
   const initialValues: IFinancialProps = {
@@ -132,26 +137,67 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
     setOpen(JSON.stringify(errors).length !== 2 ? null : id);
   };
 
+  // const onSubmit = async (data: IOrganisationProps) => {
+  //   const newData = {
+  //     ...data,
+  //     fsDocuments: file,
+  //   };
+  //   if (dataTab !== null) {
+  //     // Update existing entry in the dataList
+  //     const updatedDataList = [...dataList];
+  //     updatedDataList[dataTab] = newData;
+  //     setDataList(updatedDataList);
+  //     setDataTab(null); // Clear the selected index
+  //     resetForm();
+  //     console.log("first", updatedDataList, dataList);
+  //   } else {
+
+  //     console.log("second");
+  //   }
+  // };
+
   const onSubmit = async (data: IOrganisationProps) => {
+    let isDataExist: boolean;
+
+    const checkIfDataExist: () => boolean = () => {
+      let res = false;
+      dataList.forEach((item) => {
+        if (item.year !== data.year) {
+          res = false;
+        } else {
+          res = true;
+        }
+      });
+      return res;
+    };
+
+    isDataExist = checkIfDataExist();
+    console.log(checkIfDataExist());
+
     const newData = {
       ...data,
       fsDocuments: file,
     };
-    if (dataTab !== null) {
+    if (dataTab !== null && isDataExist) {
       // Update existing entry in the dataList
       const updatedDataList = [...dataList];
       updatedDataList[dataTab] = newData;
       setDataList(updatedDataList);
       setDataTab(null); // Clear the selected index
-    } else {
+      resetForm();
+      setFile([]);
+    } else if (dataTab === null && !isDataExist) {
       setDataList([...dataList, newData]);
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
-        setFile("");
+        setFile([]);
       }
+    } else if (dataTab === null && isDataExist) {
+      toast.error("Data already exist");
     }
   };
+
   const handleQuerySubmit = () => {
     const data = { financialStatements: dataList };
     if (dataList.length !== 0) {
@@ -185,6 +231,13 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
     setValues(dataList[index]);
     setCheck(index);
     setDataTab(index);
+    setFile((prev: any) => {
+      if (dataList[index]?.fsDocuments) {
+        return [dataList[index]?.fsDocuments];
+      } else {
+        return prev;
+      }
+    });
   };
 
   const handleDelete = (index: number) => {
@@ -281,31 +334,35 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
         </div>
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
-          {file ? (
-            <div>
-              <div className="flex items-center space-x-3">
-                <div className="bg-grey-100 rounded w-[20%] h-[128px] flex items-center justify-center">
-                  <IoDocumentAttach size={50} color="#808080" />
-                </div>
-                <div
-                  className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
-                  onClick={() => setFile("")}
-                >
-                  <RiDeleteBin5Fill size={10} color="#ffffff" />
-                </div>
+          <div className="mb-6">
+            <InputFile onChange={(e) => handleUploads(e)} />
+            {progressLoading && (
+              <div>
+                <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>
-              <p className="text-xs text-green-600 my-2">{file.slice(81)}</p>
-            </div>
-          ) : (
-            <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
-              {progressLoading && (
-                <div>
-                  <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
+          <div className="flex items-center space-x-3">
+            {file &&
+              file.map((f: any, i: number) => {
+                return (
+                  <div key={i}>
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-grey-100 rounded w-[100px] h-[128px] flex items-center justify-center">
+                        <IoDocumentAttach size={50} color="#808080" />
+                      </div>
+                      <div
+                        className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
+                        onClick={() => setFile((prev: Array<string>) => prev.filter((_, index: number) => index !== i))}
+                      >
+                        <RiDeleteBin5Fill size={10} color="#ffffff" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-green-600 my-2">{f.slice(81)}</p>
+                  </div>
+                );
+              })}
+          </div>
         </div>
 
         <button

@@ -16,10 +16,9 @@ import { acceptRecExec, acceptSugExec, getExecData, updateExec } from "@/service
 import { ClipLoader } from "react-spinners";
 
 interface IOrganisationProps {
-  type?: string;
-  coverageAmount?: string;
-  coverageStatus?: string;
-  expiryDate?: string;
+  name?: string;
+  referenceDate?: string;
+  rrDocuments?: any;
 }
 
 interface IactionProps {
@@ -32,16 +31,14 @@ interface IactionProps {
 }
 
 const validationSchema = Yup.object({
-  coverageAmount: Yup.string().required("Please fill in this field"),
-  type: Yup.string().required("Please fill in this field"),
-  coverageStatus: Yup.string().required("Please fill in this field"),
-  expiryDate: Yup.string().required("Please fill in this field"),
+  name: Yup.string().required("Please fill in this field"),
+  referenceDate: Yup.string().required("Please fill in this field"),
 });
 
 const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sugDocId, recDocId }) => {
   const { id } = useParams();
   const requestId = id || "";
-  const [file, setFile] = useState<string>("");
+  const [file, setFile] = useState<Array<string>>([]);
   const [dataTab, setDataTab] = useState<number | null>(null);
   const [dataList, setDataList] = useState<IOrganisationProps[]>(data.reference || []);
   const [check, setCheck] = useState<number | null>(null);
@@ -64,7 +61,7 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
     onSuccess: ({ data: uploadRes }) => {
       console.log(uploadRes);
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile((prev: any) => [...prev, uploadRes?.url]);
     },
 
     onError: (error) => {
@@ -110,9 +107,12 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
       console.error("Please select only one image");
       return;
     } else {
-      const imageFile = new FormData();
-      imageFile.append("file", e.target.files[0]);
-      postImage({ imageFile, flags: "organizationDocuments" });
+      let documentArray = Array.from(e.target.files);
+      documentArray.forEach((doc) => {
+        const imageFile = new FormData();
+        imageFile.append("file", doc);
+        postImage({ imageFile, flags: "organizationDocuments" });
+      });
     }
   };
 
@@ -132,7 +132,7 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
-        setFile("");
+        setFile([]);
       }
     }
   };
@@ -159,10 +159,8 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
   };
 
   const initialValues: IReferenceProps = {
-    type: "",
-    coverageAmount: "",
-    coverageStatus: "",
-    expiryDate: "",
+    name: "",
+    referenceDate: "",
   };
 
   const handleClose = () => {
@@ -219,7 +217,7 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
             key={i}
             onClick={() => handleEdit(i)} // Allow editing when a row is clicked
           >
-            <p>{data.type}</p>
+            <p>{data.name}</p>
             <div className="flex space-x-1">
               {check === i ? <IoChevronDown /> : <IoChevronUp />}
               <IoRemoveOutline onClick={() => handleDelete(i)} />
@@ -231,18 +229,18 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
       <form action="" onSubmit={handleSubmit} className="my-5 space-y-5">
         <div>
           <InputText
-            id="type"
+            id="name"
             isRequired={true}
-            label="Type"
-            placeholder="Enter type"
-            value={values.type}
-            error={getError("type")}
+            label="Name Of Organization"
+            placeholder="Enter Organization Name"
+            value={values.name}
+            error={getError("name")}
             type="text"
             onChange={handleChange}
-            name="type"
+            name="name"
           />
         </div>
-        <div>
+        {/* <div>
           <InputText
             id="coverageAmount"
             isRequired={true}
@@ -267,47 +265,51 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
             onChange={handleChange}
             name="coverageStatus"
           />
-        </div>
+        </div> */}
         <div>
           <InputText
-            id="expiryDate"
+            id="referenceDate"
             isRequired={true}
-            label="Debts Discharged"
+            label="Referece Date"
             placeholder=""
-            value={values.expiryDate}
-            error={getError("expiryDate")}
+            value={values.referenceDate}
+            error={getError("referenceDate")}
             type="date"
             onChange={handleChange}
-            name="expiryDate"
+            name="referenceDate"
           />
         </div>
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
-          {file ? (
-            <div>
-              <div className="flex items-center space-x-3">
-                <div className="bg-grey-100 rounded w-[20%] h-[128px] flex items-center justify-center">
-                  <IoDocumentAttach size={50} color="#808080" />
-                </div>
-                <div
-                  className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
-                  onClick={() => setFile("")}
-                >
-                  <RiDeleteBin5Fill size={10} color="#ffffff" />
-                </div>
+          <div>
+            <InputFile onChange={(e) => handleUploads(e)} />
+            {progressLoading && (
+              <div>
+                <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>
-              <p className="text-xs text-green-600 my-2">{file.slice(81)}</p>
-            </div>
-          ) : (
-            <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
-              {progressLoading && (
-                <div>
-                  <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
+          <div className="flex items-center space-x-3 mt-3">
+            {file &&
+              file.map((f: any, i: number) => {
+                return (
+                  <div key={i}>
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-grey-100 rounded w-[20%] h-[128px] flex items-center justify-center">
+                        <IoDocumentAttach size={50} color="#808080" />
+                      </div>
+                      <div
+                        className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
+                        onClick={() => setFile((prev) => prev.filter((_, index) => index !== i))}
+                      >
+                        <RiDeleteBin5Fill size={10} color="#ffffff" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-green-600 my-2">{f.slice(90)}</p>
+                  </div>
+                );
+              })}
+          </div>
         </div>
 
         <button

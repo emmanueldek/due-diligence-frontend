@@ -12,6 +12,7 @@ import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { Circles } from "react-loader-spinner";
 import { ClipLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 interface IOrganisationProps {
   name?: string;
@@ -103,21 +104,58 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
     setOpen(JSON.stringify(errors).length !== 2 ? null : id);
   };
 
+  // const onSubmit = async (data: IOrganisationProps) => {
+  //   if (dataTab !== null) {
+  //     // Update existing entry in the dataList
+  //     const updatedDataList = [...dataList];
+  //     updatedDataList[dataTab] = data;
+  //     setDataList(updatedDataList);
+  //     setDataTab(null); // Clear the selected index
+  //     resetForm();
+  //   } else {
+
+  //   }
+  // };
+
   const onSubmit = async (data: IOrganisationProps) => {
-    if (dataTab !== null) {
+    let isDataExist: boolean;
+
+    const checkIfDataExist: () => boolean = () => {
+      let res = false;
+      dataList.forEach((item) => {
+        if (item.name !== data.name) {
+          res = false;
+        } else {
+          res = true;
+        }
+      });
+      return res;
+    };
+
+    isDataExist = checkIfDataExist();
+    console.log(checkIfDataExist());
+
+    const newData = {
+      ...data,
+    };
+    if (dataTab !== null && isDataExist) {
       // Update existing entry in the dataList
       const updatedDataList = [...dataList];
-      updatedDataList[dataTab] = data;
+      updatedDataList[dataTab] = newData;
       setDataList(updatedDataList);
       setDataTab(null); // Clear the selected index
-    } else {
-      setDataList([...dataList, data]);
+      resetForm();
+    } else if (dataTab === null && !isDataExist) {
+      setDataList([...dataList, newData]);
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
       }
+    } else if (dataTab === null && isDataExist) {
+      toast.error("Data already exist");
     }
   };
+
   const handleQuerySubmit = () => {
     const data = { management: dataList };
     if (dataList.length !== 0) {

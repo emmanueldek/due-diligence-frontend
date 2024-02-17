@@ -70,6 +70,13 @@ export interface IEnvironComplianceProps {
   outstandingCreditLine?: string;
   ecDocuments?: string;
 }
+export interface ICreditRatingProps {
+  creditScore?: string;
+  reportingAgency?: string;
+  paymentHistory?: string;
+  outstandingCreditLine?: string;
+  ecDocuments?: string;
+}
 export interface ISupplyChainInfo {
   coverageAmount?: string;
   type?: string;

@@ -256,7 +256,7 @@ export const InputFile: React.FC<IInputFileProps> = ({ onChange }) => {
           </svg>
           <p className="text-xs text-grey-500">Click to upload or drag and drop</p>
         </div>
-        <input id="dropzone-file" type="file" className="hidden" onChange={onChange} />
+        <input id="dropzone-file" type="file" className="hidden" onChange={onChange} multiple />
       </label>
     </div>
   );

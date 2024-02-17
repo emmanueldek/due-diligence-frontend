@@ -49,33 +49,33 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
   const { id } = useParams();
   const requestId = id || "";
   const [newNext, setNext] = useState(false);
-  const [file, setFile] = useState<string | null>("");
+  const [file, setFile] = useState<Array<string>>([]);
   const [dataTab, setDataTab] = useState<number | null>(null);
-  const [dataList, setDataList] = useState<IOrganisationProps[]>(data.environCompliance || []);
+  const [dataList, setDataList] = useState<IOrganisationProps[]>(data.creditRating || []);
   const [check, setCheck] = useState<number | null>(null);
   const [open, setOpen] = useState<number | null>(null);
   const environComplianceData = { environCompliance: dataList };
   const [checkAdd, setCheckAdd] = useState(false);
 
+  console.log(data);
+
   const { data: environCompliance, isLoading: incomingData } = useQuery(
-    ["OrgenvironmentalCompliance", "environmentalCompliance", requestId],
-    () => getOrgData("environmentalCompliance", requestId),
+    ["OrgenvironmentalCompliance", "creditRating", requestId],
+    () => getOrgData("creditRating", requestId),
   );
 
+  console.log(environCompliance);
   useEffect(() => {
-    if (
-      environCompliance?.data?.environmentalCompliance &&
-      Object.keys(environCompliance?.data?.environmentalCompliance).length > 0
-    ) {
-      setDataList(environCompliance?.data?.environmentalCompliance);
-      console.log(environCompliance?.data?.environmentalCompliance);
+    if (environCompliance?.data?.creditRating && Object.keys(environCompliance?.data?.creditRating).length > 0) {
+      setDataList(environCompliance?.data?.creditRating);
+      console.log(environCompliance?.data?.creditRating);
     }
-  }, [environCompliance?.data?.environmentalCompliance]);
+  }, [environCompliance?.data?.creditRating]);
 
   const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile((prev: any) => [...prev, uploadRes?.url]);
     },
 
     onError: (error) => {
@@ -122,9 +122,12 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
       console.error("Please select only one image");
       return;
     } else {
-      const imageFile = new FormData();
-      imageFile.append("file", e.target.files[0]);
-      postImage({ imageFile, flags: "organizationDocuments" });
+      let documentArray = Array.from(e.target.files);
+      documentArray.forEach((doc) => {
+        const imageFile = new FormData();
+        imageFile.append("file", doc);
+        postImage({ imageFile, flags: "organizationDocuments" });
+      });
     }
   };
 
@@ -159,7 +162,7 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
-        setFile(null);
+        setFile([]);
       }
     }
   };
@@ -222,7 +225,7 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
 
   return (
     <div>
-      <p className="font-[700] text-2xl">Enviromental Compliance</p>
+      <p className="font-[700] text-2xl">Credit Rating</p>
 
       <div className="space-y-2">
         {dataList?.map((data, i) => (
@@ -258,7 +261,7 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
           <InputText
             id="reportingAgency"
             isRequired={true}
-            label="reportingAgency"
+            label="Reporting Agency"
             placeholder="Enter a reporting agency"
             value={values.reportingAgency}
             error={getError("reportingAgency")}
@@ -267,7 +270,7 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
             name="reportingAgency"
           />
         </div>
-        <div>
+        {/* <div>
           <InputText
             id="paymentHistory"
             isRequired={true}
@@ -279,7 +282,7 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
             onChange={handleChange}
             name="paymentHistory"
           />
-        </div>
+        </div> */}
         <div>
           <InputText
             id="outstandingCreditLine"
@@ -295,31 +298,35 @@ const EnvironCompliance: React.FC<IactionProps> = ({ next, prev, data, setData, 
         </div>
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
-          {file ? (
-            <div>
-              <div className="flex items-center space-x-3">
-                <div className="bg-grey-100 rounded w-[20%] h-[128px] flex items-center justify-center">
-                  <IoDocumentAttach size={50} color="#808080" />
-                </div>
-                <div
-                  className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
-                  onClick={() => setFile("")}
-                >
-                  <RiDeleteBin5Fill size={10} color="#ffffff" />
-                </div>
+          <div>
+            <InputFile onChange={(e) => handleUploads(e)} />
+            {progressLoading && (
+              <div>
+                <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>
-              <p className="text-xs text-green-600 my-2">{file.slice(81)}</p>
-            </div>
-          ) : (
-            <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
-              {progressLoading && (
-                <div>
-                  <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
+          <div className="flex items-center space-x-3 mt-3">
+            {file &&
+              file.map((f: any, i: number) => {
+                return (
+                  <div>
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-grey-100 rounded w-[100px] h-[128px] flex items-center justify-center">
+                        <IoDocumentAttach size={50} color="#808080" />
+                      </div>
+                      <div
+                        className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
+                        onClick={() => setFile((prev) => prev.filter((_: any, index: number) => index !== i))}
+                      >
+                        <RiDeleteBin5Fill size={10} color="#ffffff" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-green-600 my-2">{f.slice(90)}</p>
+                  </div>
+                );
+              })}
+          </div>
         </div>
 
         <button

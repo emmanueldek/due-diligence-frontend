@@ -21,7 +21,7 @@ interface IOrganisationProps {
   audFinancials?: string;
   audBy?: string;
   source?: string;
-  fsDocuments?: string;
+  fsDocuments?: Array<string> | string;
 }
 
 interface IactionProps {
