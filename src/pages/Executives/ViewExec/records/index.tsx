@@ -4,7 +4,6 @@ import Financial from "./Financial";
 import Tax from "./Tax";
 import Legal from "./Legal";
 import Credit from "./Credit";
-import Obligation from "./Obligations";
 import Insurance from "./Insurance";
 import Reference from "./Reference";
 import { IRecord } from "@/interface/executiveTypes";

@@ -13,7 +13,7 @@ const Management: React.FC<IDataStructureProps> = ({ data }) => {
       <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-[2rem]">
         {data.map((data: any, index: number) => {
           return (
-            <div className="relative h-[230px] flex items-start">
+            <div className="relative h-[230px] flex items-start" key={index}>
               <img src={data.imageUrl ? data.imageUrl : dangote} className="rounded-[5px] object-cover h-[160px]" />
 
               <div className="absolute bottom-0 w-full text-center min-h-[60px] flex items-center justify-center">
