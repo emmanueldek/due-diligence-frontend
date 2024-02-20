@@ -67,10 +67,10 @@ const NewOrganisation: React.FC = () => {
     { name: "Legal/ Regulatory", value: 5 },
     // { name: "Credit Rating", value: 6 },
     // { name: "Contractual Obligations", value: 7 },
-    { name: "Insurance Coverage", value: 8 },
+    { name: "Insurance Coverage", value: 6 },
     // { name: "Supply Chain Information", value: 9 },
-    { name: "References/ Reputation", value: 10 },
-    { name: "Ownership Structure", value: 11 },
+    { name: "References/ Reputation", value: 7 },
+    { name: "Ownership Structure", value: 8 },
   ];
 
   const next = () => {
@@ -154,31 +154,31 @@ const NewOrganisation: React.FC = () => {
             recDocId={recDocId}
           />
         );
+      // case 6:
+      //   return (
+      //     <CreditRating
+      //       next={next}
+      //       prev={prev}
+      //       data={data}
+      //       setData={setData}
+      //       execDocID={execDocId}
+      //       sugDocId={sugDocId}
+      //       recDocId={recDocId}
+      //     />
+      //   );
+      // case 7:
+      //   return (
+      //     <Obligation
+      //       next={next}
+      //       prev={prev}
+      //       data={data}
+      //       setData={setData}
+      //       execDocID={execDocId}
+      //       sugDocId={sugDocId}
+      //       recDocId={recDocId}
+      //     />
+      //   );
       case 6:
-        return (
-          <CreditRating
-            next={next}
-            prev={prev}
-            data={data}
-            setData={setData}
-            execDocID={execDocId}
-            sugDocId={sugDocId}
-            recDocId={recDocId}
-          />
-        );
-      case 7:
-        return (
-          <Obligation
-            next={next}
-            prev={prev}
-            data={data}
-            setData={setData}
-            execDocID={execDocId}
-            sugDocId={sugDocId}
-            recDocId={recDocId}
-          />
-        );
-      case 8:
         return (
           <Insurance
             next={next}
@@ -190,19 +190,19 @@ const NewOrganisation: React.FC = () => {
             recDocId={recDocId}
           />
         );
-      case 9:
-        return (
-          <SupplyChainInfo
-            next={next}
-            prev={prev}
-            data={data}
-            setData={setData}
-            execDocID={execDocId}
-            sugDocId={sugDocId}
-            recDocId={recDocId}
-          />
-        );
-      case 10:
+      // case 9:
+      //   return (
+      //     <SupplyChainInfo
+      //       next={next}
+      //       prev={prev}
+      //       data={data}
+      //       setData={setData}
+      //       execDocID={execDocId}
+      //       sugDocId={sugDocId}
+      //       recDocId={recDocId}
+      //     />
+      //   );
+      case 7:
         return (
           <Reference
             next={next}
@@ -214,7 +214,7 @@ const NewOrganisation: React.FC = () => {
             recDocId={recDocId}
           />
         );
-      case 11:
+      case 8:
         return (
           <OwnershipStructure
             next={next}

@@ -24,10 +24,10 @@ const Reference: React.FC<IDataRefProps> = ({ data }) => {
   const newData: IReferenceProps[] = data ? data : [];
 
   const columns: Column[] = [
-    { field: "type", header: "Type" },
-    { field: "coverageAmount", header: "Coverage Amount" },
-    { field: "coverageStatus", header: "Coverage Status" },
-    { field: "expiryDate", header: "Expiry Date" },
+    { field: "name", header: "Name" },
+    // { field: "coverageAmount", header: "Coverage Amount" },
+    // { field: "coverageStatus", header: "Coverage Status" },
+    { field: "referenceDate", header: "Reference Date" },
     { field: "rrDocuments", header: "" },
   ];
 

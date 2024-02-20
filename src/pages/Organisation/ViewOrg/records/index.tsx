@@ -8,20 +8,24 @@ import Obligation from "./Obligations";
 import Insurance from "./Insurance";
 import Reference from "./Reference";
 import { IDataSetProps } from "@/interface/organisationTypes";
+import Management from "./Management";
+import OwnershipStructure from "./OwnershipStructure";
 
 const Records: React.FC<IDataSetProps> = ({ data }) => {
   const [step, setStep] = useState<number>(0);
   const tabs = [
     { name: "Profile", value: 0 },
     { name: "Financial Statements", value: 1 },
-    { name: "Tax Compliance", value: 2 },
-    { name: "Legal/ Regulatory", value: 3 },
-    { name: "Credit Reports", value: 4 },
-    { name: "Contractual Obligations", value: 5 },
+    { name: "Managements", value: 2 },
+    { name: "Credit History", value: 3 },
+    { name: "Tax Compliance", value: 4 },
+    { name: "Legal/ Regulatory", value: 5 },
     { name: "Insurance Coverage", value: 6 },
     { name: "References/ Reputation", value: 7 },
+    { name: "Ownership Structure", value: 8 },
   ];
 
+  console.log(data);
   const displaySteps = () => {
     switch (step) {
       case 0:
@@ -29,17 +33,19 @@ const Records: React.FC<IDataSetProps> = ({ data }) => {
       case 1:
         return <Financial data={data?.theOrganization?.financialStatements || []} />;
       case 2:
-        return <Tax data={data?.theOrganization?.taxCompliance || []} />;
+        return <Management data={data?.theOrganization?.management || []} />;
       case 3:
-        return <Legal data={data?.theOrganization?.legalRegulatory || []} />;
-      case 4:
         return <Credit data={data?.theOrganization?.creditHistory || []} />;
+      case 4:
+        return <Tax data={data?.theOrganization?.taxCompliance || []} />;
       case 5:
-        return <Obligation data={data?.theOrganization?.contractualObligations || []} />;
+        return <Legal data={data?.theOrganization?.legalRegulatory || []} />;
       case 6:
         return <Insurance data={data?.theOrganization?.insuranceCoverage || []} />;
       case 7:
         return <Reference data={data?.theOrganization?.referencesReputation || []} />;
+      case 8:
+        return <OwnershipStructure data={data?.theOrganization?.ownershipStructure} />;
       default:
     }
   };

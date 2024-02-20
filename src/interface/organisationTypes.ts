@@ -129,7 +129,7 @@ export interface IOrgData {
   financialStatements?: IFinancialProps[];
   management?: IManagementProps[];
   environCompliance?: IEnvironComplianceProps[];
-  ownershipStructure?: IOwnerShipStructure;
+  ownershipStructure?: IOwnerShipStructure[];
   supplyChainInfo?: ISupplyChainInfo[];
 }
 

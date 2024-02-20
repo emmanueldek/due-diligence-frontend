@@ -38,7 +38,7 @@ const Credit: React.FC<ICredit> = ({ data }) => {
       ) : (
         <>
           <div>
-            <p className="font-[700] 2xl">Credit Reports</p>
+            <p className="font-[700] 2xl">Credit History</p>
             <hr className="border-grey-50 mt-2 mb-5" />
           </div>
           <table className="w-full">

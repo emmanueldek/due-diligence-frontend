@@ -16,10 +16,10 @@ const Records: React.FC<IRecord> = ({ data }) => {
     { name: "Financial Statements", value: 1 },
     { name: "Tax Compliance", value: 2 },
     { name: "Legal/ Regulatory", value: 3 },
-    { name: "Credit Reports", value: 4 },
-    { name: "Contractual Obligations", value: 5 },
-    { name: "Insurance Coverage", value: 6 },
-    { name: "References/ Reputation", value: 7 },
+    { name: "Credit History", value: 4 },
+    // { name: "Contractual Obligations", value: 5 },
+    { name: "Insurance Coverage", value: 5 },
+    { name: "References/ Reputation", value: 6 },
   ];
 
   const displaySteps = () => {
@@ -34,11 +34,11 @@ const Records: React.FC<IRecord> = ({ data }) => {
         return <Legal data={data?.theExecutive?.legalRegulatory || []} />;
       case 4:
         return <Credit data={data?.theExecutive?.creditHistory || []} />;
+      // case 5:
+      //   return <Obligation data={data?.theExecutive?.contractualObligations || []} />;
       case 5:
-        return <Obligation data={data?.theExecutive?.contractualObligations || []} />;
-      case 6:
         return <Insurance data={data?.theExecutive?.insuranceCoverage || []} />;
-      case 7:
+      case 6:
         return <Reference data={data?.theExecutive?.referencesReputation || []} />;
       default:
     }

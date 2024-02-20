@@ -51,9 +51,9 @@ const Records: React.FC = () => {
     { name: "Tax Compliance", value: 2 },
     { name: "Legal/ Regulatory", value: 3 },
     { name: "Credit Reports", value: 4 },
-    { name: "Contractual Obligations", value: 5 },
-    { name: "Insurance Coverage", value: 6 },
-    { name: "References/ Reputation", value: 7 },
+    // { name: "Contractual Obligations", value: 5 },
+    { name: "Insurance Coverage", value: 5 },
+    { name: "References/ Reputation", value: 6 },
   ];
 
   const next = () => {
@@ -125,19 +125,19 @@ const Records: React.FC = () => {
             recDocId={recDocId}
           />
         );
+      // case 5:
+      //   return (
+      //     <Obligation
+      //       next={next}
+      //       prev={prev}
+      //       data={data}
+      //       setData={setData}
+      //       execDocID={execDocId}
+      //       sugDocId={sugDocId}
+      //       recDocId={recDocId}
+      //     />
+      //   );
       case 5:
-        return (
-          <Obligation
-            next={next}
-            prev={prev}
-            data={data}
-            setData={setData}
-            execDocID={execDocId}
-            sugDocId={sugDocId}
-            recDocId={recDocId}
-          />
-        );
-      case 6:
         return (
           <Insurance
             next={next}
@@ -149,7 +149,7 @@ const Records: React.FC = () => {
             recDocId={recDocId}
           />
         );
-      case 7:
+      case 6:
         return (
           <Reference
             prev={prev}
