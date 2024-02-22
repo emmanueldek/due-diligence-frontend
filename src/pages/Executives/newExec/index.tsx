@@ -48,7 +48,7 @@ const Records: React.FC = () => {
     { name: "Profile", value: 0 },
     { name: "Financial Statements", value: 1 },
     { name: "Tax Compliance", value: 2 },
-    { name: "Legal/ Regulatory", value: 3 },
+    { name: "Legal", value: 3 },
     { name: "Credit Reports", value: 4 },
     // { name: "Contractual Obligations", value: 5 },
     { name: "Insurance Coverage", value: 5 },

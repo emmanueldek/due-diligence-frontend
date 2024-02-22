@@ -221,7 +221,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
 
   return (
     <div>
-      <p className="font-[700] text-2xl">Legal/Regulatory</p>
+      <p className="font-[700] text-2xl">Legal</p>
 
       <div className="space-y-2">
         {dataList?.map((data, i) => (
