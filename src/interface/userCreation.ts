@@ -95,6 +95,8 @@ export interface IProfileProps {
   location?: string;
   country?: string;
   website?: string;
+  cacNumber?: string;
+  cacDocument?: string;
 }
 
 export interface IDataProps {
