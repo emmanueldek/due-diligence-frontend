@@ -107,6 +107,7 @@ export interface IProfileProps {
   location?: string;
   country?: string;
   website?: string;
+  cacNumber?: string;
 }
 
 export interface IOrgData {

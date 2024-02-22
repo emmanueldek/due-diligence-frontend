@@ -61,7 +61,7 @@ const NewOrganisation: React.FC = () => {
     { name: "Management", value: 2 },
     { name: "Credit History", value: 3 },
     { name: "Tax Compliance", value: 4 },
-    { name: "Legal/ Regulatory", value: 5 },
+    { name: "Legal", value: 5 },
     // { name: "Credit Rating", value: 6 },
     // { name: "Contractual Obligations", value: 7 },
     { name: "Insurance Coverage", value: 6 },

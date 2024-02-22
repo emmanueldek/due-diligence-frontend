@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { InputText, SelectInput, TextArea } from "@/components";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { InputFile, InputText, SelectInput, TextArea } from "@/components";
+import { IoChevronBack, IoChevronForward, IoDocumentAttach } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 // import SaveDraftModal from "./SaveDraftModal";
@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { acceptRecOrg, acceptSugOrg, getSingleOrg, updateOrg, useUploadImage } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { Circles } from "react-loader-spinner";
+import { Circles, ProgressBar } from "react-loader-spinner";
 import { IOrganisationProps } from "@/interface/organisationTypes";
 import { ClipLoader } from "react-spinners";
 import { transformToLableValue } from "@/utils";
@@ -19,6 +19,7 @@ import countryData from "@/assets/data/countries.json";
 import stateData from "@/assets/data/states.json";
 import industryData from "@/assets/data/industries.json";
 import organizationSizeData from "@/assets/data/org_size.json";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 interface IInitialData {
   organizationName?: string;
@@ -29,6 +30,7 @@ interface IInitialData {
   location?: string;
   country?: string;
   website?: string;
+  cacNumber?: string;
 }
 
 interface IactionProps {
@@ -49,6 +51,7 @@ const validationSchema = Yup.object({
   // location: Yup.string().required("Please fill in this field"),
   // country: Yup.string().required("Please fill in this field"),
   website: Yup.string().required("Please fill in this field"),
+  cacNumber: Yup.string().required("Please fill in this field"),
 });
 
 const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDocId, recDocId }) => {
@@ -56,6 +59,8 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
   const [open, setOpen] = useState<number | null>(null);
   const [loadProfile, setLoadProfile] = useState(false);
   const [newNext, setNext] = useState(false);
+  const [file, setFile] = useState<string>("");
+  const [showEdit, setShowEdit] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const requestId = id || "undefined";
@@ -67,10 +72,17 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
     }
     return null;
   });
+
   useEffect(() => {
-    if (getData?.data && Object.keys(getData.data).length > 0) setGetPrev(getData?.data);
+    if (getData?.data && Object.keys(getData.data).length > 0) {
+      setGetPrev(getData?.data);
+    }
+    if (getData?.data?.theOrganization?.profile?.cacDocument) {
+      setFile(getData?.data?.theOrganization?.profile?.cacDocument);
+    }
   }, [getData?.data]);
 
+  console.log(getData?.data);
   console.log(getPrev);
 
   const initialValues: IInitialData = {
@@ -82,6 +94,7 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
     country: getPrev?.theOrganization?.profile?.country || "",
     website: getPrev?.theOrganization?.profile?.website || "",
     organizationLogo: getPrev?.theOrganization?.profile?.organizationLogo || "",
+    cacNumber: getPrev?.theOrganization?.profile?.cacNumber || "",
   };
 
   const handleClose = () => {
@@ -116,6 +129,18 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
       Toast.success("upload success");
       queryClient.invalidateQueries({ queryKey: ["singleRequest"] });
       setLoadProfile(true);
+    },
+
+    onError: (error) => {
+      Toast.error("something went wrong");
+      console.log(error);
+    },
+  });
+
+  const { mutate: uploadCAC, isLoading: progressLoading } = useMutation(useUploadImage, {
+    onSuccess: ({ data: uploadRes }) => {
+      setFile(uploadRes?.url);
+      Toast.success("File uploaded successfully");
     },
 
     onError: (error) => {
@@ -163,6 +188,8 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
         organizationLogo: data.organizationLogo,
         location: `${data.location} , ${data.country}`,
         website: data.website,
+        cacNumber: data.cacNumber,
+        cacDocument: file,
       },
     };
     setData((prevData: IDataProps) => ({
@@ -205,6 +232,17 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
     }
   };
 
+  const handleCACFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      Toast.error("Please select only one file");
+      return;
+    } else {
+      const imageFile = new FormData();
+      imageFile.append("file", e.target.files[0]);
+      uploadCAC({ imageFile, flags: "organizationProfiles" });
+    }
+  };
+
   const profile = {
     profile: {
       organizationName: values.organizationName,
@@ -213,6 +251,7 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
       industry: values.industry,
       location: values.location + ", " + values.country,
       website: values.website,
+      cacNumber: values.cacNumber,
     },
   };
 
@@ -251,9 +290,26 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
               className="rounded-2xl text-xs flex w-fit p-1 px-2 items-center justify-center border cursor-pointer "
             >
               <div className="flex flex-col items-center justify-center">
-                <p className="text-xs text-grey-500">Upload logo</p>
+                <p
+                  className="text-xs text-grey-500"
+                  onClick={() => {
+                    if (getPrev?.theOrganization?.profile?.organizationLogo) {
+                      if (showEdit) {
+                        setShowEdit(false);
+                      } else {
+                        setShowEdit(true);
+                      }
+                    } else {
+                      setShowEdit(true);
+                    }
+                  }}
+                >
+                  Upload logo
+                </p>
               </div>
-              <input id="dropzone-file" type="file" className="hidden" onChange={(e) => handleUploads(e)} />
+              {showEdit && (
+                <input id="dropzone-file" type="file" className="hidden" onChange={(e) => handleUploads(e)} />
+              )}
             </label>
           </div>
         </div>
@@ -350,6 +406,49 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
             onChange={handleChange}
             name="website"
           />
+        </div>
+        <div className="mt-5">
+          <InputText
+            id="cacNumber"
+            isRequired={true}
+            label="CAC Registration Number"
+            placeholder="Enter your CAC Registration Number"
+            value={values.cacNumber}
+            error={getError("cacNumber")}
+            type="text"
+            onChange={handleChange}
+            name="cacNumber"
+          />
+        </div>
+
+        <div>
+          <p className="text-sm mb-2 font-medium">Upload CAC document</p>
+          <div className="mb-6">
+            <InputFile onChange={(e) => handleCACFileUpload(e)} />
+            {progressLoading && (
+              <div>
+                <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
+              </div>
+            )}
+          </div>
+          <div className="flex items-center space-x-3">
+            {file && (
+              <div>
+                <div className="flex items-center space-x-3">
+                  <div className="bg-grey-100 rounded w-[100px] h-[128px] flex items-center justify-center">
+                    <IoDocumentAttach size={50} color="#808080" />
+                  </div>
+                  <div
+                    className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
+                    onClick={() => setFile("")}
+                  >
+                    <RiDeleteBin5Fill size={10} color="#ffffff" />
+                  </div>
+                </div>
+                <p className="text-xs text-green-600 my-2">{file.slice(81)}</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <>
