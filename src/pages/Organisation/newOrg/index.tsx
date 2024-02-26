@@ -66,7 +66,7 @@ const NewOrganisation: React.FC = () => {
     // { name: "Contractual Obligations", value: 7 },
     { name: "Insurance Coverage", value: 6 },
     // { name: "Supply Chain Information", value: 9 },
-    { name: "References/ Reputation", value: 7 },
+    { name: "References", value: 7 },
     { name: "Ownership Structure", value: 8 },
   ];
 

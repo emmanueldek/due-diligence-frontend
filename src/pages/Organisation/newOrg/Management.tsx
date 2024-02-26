@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { InputFile, InputText } from "@/components";
+import { InputFile, InputText, TextArea } from "@/components";
 import {
   IoChevronBack,
   IoChevronDown,
@@ -25,6 +25,8 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 interface IOrganisationProps {
   name?: string;
   position?: string;
+  description?: string;
+  imageUrl?: string;
 }
 
 interface IactionProps {
@@ -40,6 +42,7 @@ interface IactionProps {
 const validationSchema = Yup.object({
   name: Yup.string().required("Please fill in this field"),
   position: Yup.string().required("Please fill in this field"),
+  description: Yup.string(),
 });
 
 const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sugDocId, recDocId }) => {
@@ -52,7 +55,7 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
   const [open, setOpen] = useState<number | null>(null);
   const managementData = { management: dataList };
   const [checkAdd, setCheckAdd] = useState(false);
-  const [file, setFile] = useState<string>("");
+  const [file, setFile] = useState<string | undefined>("");
 
   const { data: manageData, isLoading: incomingData } = useQuery(["management", "management", requestId], () =>
     getOrgData("management", requestId),
@@ -112,6 +115,7 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
   const initialValues: IManagementProps = {
     name: "",
     position: "",
+    description: "",
   };
 
   const handleClose = () => {
@@ -148,21 +152,32 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
 
   const onSubmit = async (data: IOrganisationProps) => {
     console.log("data");
-    let isDataExist: boolean;
+    // let isDataExist: boolean;
 
-    const checkIfDataExist: () => boolean = () => {
+    // const checkIfDataExist: () => boolean = () => {
+    //   dataList.forEach((item) => {
+    //     let res = false;
+    //     console.log(item.name, data.name);
+    //     if (item.name === data.name) {
+    //       res = true;
+    //     } else {
+    //       res = false;
+    //     }
+    //   });
+    //   return res;
+    // };
+
+    const checkIfDataExist = () => {
       let res = false;
-      dataList.forEach((item) => {
-        if (item.name !== data.name) {
-          res = false;
-        } else {
+      dataList.filter((item) => {
+        if (item.name === data.name) {
           res = true;
         }
       });
       return res;
     };
 
-    isDataExist = checkIfDataExist();
+    const isDataExist = checkIfDataExist();
     console.log(checkIfDataExist());
 
     const newData = {
@@ -182,8 +197,8 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
       if (checkAdd) {
         setCheckAdd(false);
         setFile("");
-        resetForm();
       }
+      resetForm();
     } else if (dataTab === null && isDataExist) {
       toast.error("Data already exist");
     } else {
@@ -228,6 +243,7 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
     // Set the form fields with data from the selected index
     console.log(dataList[index]);
     setValues(dataList[index]);
+    setFile(dataList[index]?.imageUrl);
     setCheck(index);
     setDataTab(index); // Set the selected index
   };
@@ -291,12 +307,26 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
             id="position"
             isRequired={true}
             label="Position"
-            placeholder="Enter your position"
+            placeholder="Enter position"
             value={values.position}
             error={getError("position")}
             type="text"
             onChange={handleChange}
             name="position"
+          />
+        </div>
+        <div>
+          <TextArea
+            className="min-h-[150px]"
+            id="description"
+            isRequired={false}
+            label="Description"
+            placeholder="Enter description"
+            value={values.description}
+            error={getError("description")}
+            type="text"
+            onChange={handleChange}
+            name="description"
           />
         </div>
         {/* <div>

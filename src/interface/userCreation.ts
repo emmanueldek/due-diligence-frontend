@@ -48,6 +48,8 @@ export interface IManagementProps {
   name?: string;
   position?: string;
   location?: string;
+  description?: string;
+  imageUrl?: string;
 }
 export interface IEnvironComplianceProps {
   creditScore?: string;

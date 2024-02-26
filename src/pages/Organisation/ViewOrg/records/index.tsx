@@ -20,10 +20,9 @@ const Records: React.FC<IDataSetProps> = ({ data }) => {
     { name: "Tax Compliance", value: 4 },
     { name: "Legal/ Regulatory", value: 5 },
     { name: "Insurance Coverage", value: 6 },
-    { name: "References/ Reputation", value: 7 },
+    { name: "References", value: 7 },
     { name: "Ownership Structure", value: 8 },
   ];
-
   console.log(data);
   const displaySteps = () => {
     switch (step) {

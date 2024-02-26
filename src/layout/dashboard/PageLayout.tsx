@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { NavBar, SideBar } from "@/components";
 import { getToken } from "@/helpers/authHelpers";
+import ViewManagement from "@/components/modal/ViewManagement";
 
 function PageLayout() {
   const [openNav, setOpenNav] = useState(false);
@@ -29,6 +30,7 @@ function PageLayout() {
           <Outlet />
         </div>
       </div>
+      <ViewManagement />
     </div>
   );
 }
