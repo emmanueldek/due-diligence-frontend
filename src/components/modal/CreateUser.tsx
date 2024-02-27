@@ -1,13 +1,12 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import close from "../../assets/icons/close.svg";
-import { InputText, LoadingBtn, PrimaryBtn, SelectInput, TextArea, TransparentBtn } from "@/components";
+import { InputText, PrimaryBtn, TransparentBtn } from "@/components";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
-import { useNavigate } from "react-router-dom";
 import { useCreateUser } from "@/store/useCreateUser";
 
 interface IInitialData {
@@ -27,8 +26,6 @@ const validationSchema = Yup.object({
 const CreateUser = () => {
   const { showModal, setShowModal } = useCreateUser();
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
-
-  const navigate = useNavigate();
 
   const { mutate } = useMutation(createUser, {
     onSuccess: (data) => {
@@ -69,7 +66,7 @@ const CreateUser = () => {
     mutate(profile);
   };
 
-  const { handleChange, values, handleSubmit, errors, touched, resetForm } = useFormik({
+  const { handleChange, values, handleSubmit, errors, touched } = useFormik({
     initialValues,
     validationSchema,
     onSubmit,

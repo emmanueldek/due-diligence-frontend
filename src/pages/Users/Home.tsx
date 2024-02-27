@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CiSearch } from "react-icons/ci";
 import { AiOutlinePlus } from "react-icons/ai";
-// import { HiOutlineChevronDown } from "react-icons/hi";
 import { Wrapper } from "@/components";
 import InviteModal from "./InviteModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllPartners, makeAdmin, makeMember, removeMember } from "@/services/workspaceService";
+import { getAllPartners } from "@/services/workspaceService";
 import Skeleton from "react-loading-skeleton";
 import Pagination from "@/components/pagination";
 import { FiMoreVertical } from "react-icons/fi";
-import useDebounce from "@/hooks/useDebounce";
 import { Toast } from "@/config/toast";
 import { useNavigate } from "react-router-dom";
 import useUser from "@/store/useUser";
@@ -55,11 +52,8 @@ const Home: React.FC = () => {
   const DATASIZE = 10;
   const { user } = useUser();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [searchValue, setSearchValue] = useState("");
-  const debouncedSearchValue = useDebounce(searchValue, 500);
   const [modalOpen, setModalOpen] = useState<{ [key: number]: boolean }>({});
   const menuRef = useRef<HTMLDivElement | null>(null);
-  // const [data, setData] = useState<TUserResponseSchema>();
   const [dataCount] = useState(0);
 
   const navigate = useNavigate();
@@ -72,10 +66,6 @@ const Home: React.FC = () => {
       ...prevState,
       [rowIndex]: true,
     }));
-  };
-
-  const handleClick = (id: number) => {
-    setOpen(open === id ? null : id);
   };
 
   const handleClose = () => {
@@ -94,20 +84,12 @@ const Home: React.FC = () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, [closeDropdown]);
+
   const { data: partnersData, isLoading } = useQuery({
-    queryKey: ["partners", currentPage, debouncedSearchValue],
-    queryFn: () => getAllPartners(currentPage, debouncedSearchValue),
+    queryKey: ["partners"],
+    queryFn: () => getAllPartners(currentPage),
   });
-  const { mutate: deleteMember } = useMutation(removeMember, {
-    onSuccess: (data) => {
-      setModalOpen({});
-      queryClient.invalidateQueries({ queryKey: ["workspace"] });
-      Toast.success(data?.message);
-    },
-    onError: () => {
-      Toast.error(`cannot delete member`);
-    },
-  });
+
   const { mutate: suspendPartner } = useMutation(suspendUser, {
     onSuccess: (data) => {
       setModalOpen({});
@@ -118,6 +100,7 @@ const Home: React.FC = () => {
       Toast.error((error as { message: string })?.message);
     },
   });
+
   const { mutate: deletePartner } = useMutation(deleteUser, {
     onSuccess: (data) => {
       setShowEditModal(false);

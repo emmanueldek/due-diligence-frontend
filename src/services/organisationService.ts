@@ -29,12 +29,6 @@ interface ICREATEUSER {
   email: any;
   password?: any;
 }
-interface IUPDATEUSER {
-  firstName?: any;
-  lastName?: any;
-  email?: any;
-  password?: any;
-}
 
 interface IFinance {
   financialStatements: IFinancialProps[];

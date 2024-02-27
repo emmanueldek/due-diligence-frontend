@@ -27,10 +27,10 @@ export const getAllWorkspaceMembers = async (batch: number, searchValue: string)
     throw handleApiError(error);
   }
 };
-export const getAllPartners = async (batch: number, searchValue: string) => {
+export const getAllPartners = async (batch: number) => {
   try {
     const { data } = await recordsApi.get(
-      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.GET_PARTNERS}?batch=${batch}&search=${searchValue || ""}`,
+      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.GET_PARTNERS}?batch=${batch}`,
     );
     return data;
   } catch (error) {

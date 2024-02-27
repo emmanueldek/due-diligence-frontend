@@ -44,7 +44,7 @@ const EditUser = () => {
     mutate({ id: editData?.partnerId, data });
   };
 
-  const { handleChange, values, handleSubmit, errors, touched, resetForm } = useFormik({
+  const { handleChange, values, handleSubmit, errors, touched } = useFormik({
     initialValues,
     validationSchema,
     onSubmit,
