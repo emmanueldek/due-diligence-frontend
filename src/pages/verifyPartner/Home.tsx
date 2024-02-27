@@ -21,7 +21,8 @@ const Home = () => {
         window.open("https://diligence-records.vercel.app/auth/login", "_blank");
         console.log(data);
       } else {
-        navigate("/auth/create-new-password/" + params.partnerId);
+        window.open(`https://diligence-records.vercel.app/auth/create-new-password/${params.partnerId}`, "_blank");
+        console.log("No password", data);
       }
     },
     onError: (error) => {
