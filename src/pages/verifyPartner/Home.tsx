@@ -20,7 +20,7 @@ const Home = () => {
       if (data.data.hasPassword) {
         window.location.href = "https://diligence-records.vercel.app/auth/login";
       } else {
-        navigate("/auth/create-password" + params.partnerId);
+        navigate("/auth/create-password/" + params.partnerId);
       }
     },
     onError: (error) => {
