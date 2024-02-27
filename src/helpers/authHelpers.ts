@@ -3,21 +3,13 @@ type TokenData = {
   workspace: string;
 };
 export const setToken = (tokenData: TokenData) => {
-  localStorage.setItem("token", JSON.stringify(tokenData));
+  sessionStorage.setItem("token", JSON.stringify(tokenData));
 };
 
 export const getToken = (): TokenData | undefined => {
-  // if (typeof window === "undefined") return undefined;
-
-  // if (!localStorage.getItem("token")) return undefined;
-
-  // const token: TokenData | null = JSON.parse(localStorage.getItem("token"));
-  // if (token) {
-  //   return token;
-  // }
   if (typeof window === "undefined") return undefined;
 
-  const tokenString = localStorage.getItem("token");
+  const tokenString = sessionStorage.getItem("token");
 
   if (!tokenString) return undefined;
 
@@ -31,7 +23,7 @@ export const getToken = (): TokenData | undefined => {
 };
 
 export const removeToken = (arg: string) => {
-  localStorage.removeItem(arg);
+  sessionStorage.removeItem(arg);
 };
 
 export const removeAuthToken = () => {
@@ -43,17 +35,17 @@ export const removeAuthToken = () => {
 };
 
 export const setEmail = (email: string): void => {
-  localStorage.setItem("email", email);
+  sessionStorage.setItem("email", email);
 };
 
 export const getEmail = (): string | null => {
-  return localStorage.getItem("email");
+  return sessionStorage.getItem("email");
 };
 
 export const setUserType = (userType: string): void => {
-  localStorage.setItem("userType", userType);
+  sessionStorage.setItem("userType", userType);
 };
 
 export const getUserType = (): string | null => {
-  return localStorage.getItem("userType");
+  return sessionStorage.getItem("userType");
 };
