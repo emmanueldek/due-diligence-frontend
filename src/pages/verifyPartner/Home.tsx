@@ -3,14 +3,11 @@ import { Circles } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { verifyPartner } from "@/services/organisationService";
-import { useNavigate } from "react-router-dom";
 
 type TParams = {
   partnerId?: string | undefined;
 };
 const Home = () => {
-  const navigate = useNavigate();
-
   const params: TParams = useParams();
   console.log(params);
 
