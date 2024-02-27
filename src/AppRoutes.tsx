@@ -1,4 +1,4 @@
-import { Dashboard, Executives, Organisation, Settings } from "./pages";
+import { Dashboard, Executives, Organisation, Settings, Users } from "./pages";
 import ForgetPassword from "./pages/auth/ForgetPassword";
 import Login from "./pages/auth/Login";
 import { ResetVerify } from "./pages/auth/MailVerification";
@@ -26,6 +26,10 @@ export const appRoutes = [
   {
     path: "/profile/*",
     element: <UserProfile />,
+  },
+  {
+    path: "/users/*",
+    element: <Users />,
   },
 ];
 

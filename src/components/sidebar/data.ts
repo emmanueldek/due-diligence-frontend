@@ -1,5 +1,6 @@
 import { GoTable, GoOrganization, GoPeople, GoGear, GoDatabase } from "react-icons/go";
 import { PiPencilLineFill } from "react-icons/pi";
+import { FaRegUser } from "react-icons/fa";
 
 export const sidebarItems = [
   {
@@ -45,5 +46,10 @@ export const sidebarItems = [
     name: "Settings",
     pathname: "/settings",
     Icon: GoGear,
+  },
+  {
+    name: "Users",
+    pathname: "/users",
+    Icon: FaRegUser,
   },
 ];

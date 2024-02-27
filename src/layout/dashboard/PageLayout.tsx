@@ -3,6 +3,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { NavBar, SideBar } from "@/components";
 import { getToken } from "@/helpers/authHelpers";
 import ViewManagement from "@/components/modal/ViewManagement";
+import CreateUser from "@/components/modal/CreateUser";
+import EditUser from "@/components/modal/EditUser";
 
 function PageLayout() {
   const [openNav, setOpenNav] = useState(false);
@@ -31,6 +33,8 @@ function PageLayout() {
         </div>
       </div>
       <ViewManagement />
+      <CreateUser />
+      <EditUser />
     </div>
   );
 }

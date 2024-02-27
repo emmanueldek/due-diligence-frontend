@@ -27,6 +27,17 @@ export const getAllWorkspaceMembers = async (batch: number, searchValue: string)
     throw handleApiError(error);
   }
 };
+export const getAllPartners = async (batch: number, searchValue: string) => {
+  try {
+    const { data } = await recordsApi.get(
+      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.GET_PARTNERS}?batch=${batch}&search=${searchValue || ""}`,
+    );
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
 export const removeMember = async (adminId: string) => {
   try {
     const { data } = await recordsApi.delete(

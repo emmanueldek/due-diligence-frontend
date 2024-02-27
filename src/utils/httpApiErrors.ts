@@ -19,7 +19,7 @@ export const handleApiError = (error: any) => {
       case 401:
         return "Unauthorized User!";
       case 403:
-        return "Forbidden";
+        return response?.data.message || "Forbidden";
       case 404:
         return response?.data.message || response?.data || "Resource not found";
       case 409:

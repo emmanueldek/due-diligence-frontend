@@ -23,6 +23,19 @@ interface IUploadImagePayload {
 interface IProfile {
   profile: IProfileProps;
 }
+interface ICREATEUSER {
+  firstName: any;
+  lastName: any;
+  email: any;
+  password?: any;
+}
+interface IUPDATEUSER {
+  firstName?: any;
+  lastName?: any;
+  email?: any;
+  password?: any;
+}
+
 interface IFinance {
   financialStatements: IFinancialProps[];
 }
@@ -312,6 +325,49 @@ export const acceptRecOrg = async (payload: IOrgProps) => {
 export const orgCount = async () => {
   try {
     const { data } = await recordsApi.get(`${BACKEND_URL.VERSION.v1}${BACKEND_URL.REQUEST.COUNT_ORGANIZATION_REQUEST}`);
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+export const createUser = async (payload: ICREATEUSER) => {
+  try {
+    const { data } = await recordsApi.post(`${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.CREATE_USER}`, payload);
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+export const updateUser = async (payload: any) => {
+  try {
+    const { data } = await recordsApi.patch(
+      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.UPDATE_PARTNER}?partnerId=${payload.id}`,
+      payload.data,
+    );
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+export const suspendUser = async (id: string) => {
+  try {
+    const { data } = await recordsApi.patch(
+      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.SUSPEND_PARTNER}?partnerId=${id}`,
+    );
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+export const deleteUser = async (id: string) => {
+  try {
+    const { data } = await recordsApi.delete(
+      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.DELETE_PARTNER}?partnerId=${id}`,
+    );
     return data;
   } catch (error) {
     throw handleApiError(error);

@@ -35,6 +35,13 @@ export const BACKEND_URL = {
     ACTIVITIES: "/organization/audit-trail",
     DELETE_ORG: "/organization/delete",
   },
+  PARTNER: {
+    CREATE_USER: "/partner/create",
+    GET_PARTNERS: "/partner/retrieve",
+    DELETE_PARTNER: "/partner/delete",
+    SUSPEND_PARTNER: "/partner/suspend",
+    UPDATE_PARTNER: "/partner/update",
+  },
   DASHBOARD: {
     DASHDRAFT: "/dashboard/drafts",
     DASHSTATS: "/dashboard/stats",
