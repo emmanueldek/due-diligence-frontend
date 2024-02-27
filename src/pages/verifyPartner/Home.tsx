@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Circles } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";

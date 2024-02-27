@@ -15,7 +15,6 @@ import {
   ITaxProps,
   IOwnerShipStructure,
 } from "@/interface/userCreation";
-import { VerifyPartner } from "@/pages/verifyPartner";
 
 interface IUploadImagePayload {
   flags?: string; // Optional property
