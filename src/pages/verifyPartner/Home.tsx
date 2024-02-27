@@ -18,7 +18,7 @@ const Home = () => {
         window.open("https://diligence-records.vercel.app/auth/login", "_blank");
         console.log(data);
       } else {
-        window.open(`https://diligence-records.vercel.app/auth/create-new-password/${params.partnerId}`, "_blank");
+        window.open(`https://records-admin.vercel.app/auth/create-new-password/${params.partnerId}`, "_blank");
         console.log("No password", data);
       }
     },
