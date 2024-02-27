@@ -18,7 +18,8 @@ const Home = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.data.hasPassword) {
-        window.location.href = "https://diligence-records.vercel.app/auth/login";
+        window.open("https://diligence-records.vercel.app/auth/login", "_blank");
+        console.log(data);
       } else {
         navigate("/auth/create-new-password/" + params.partnerId);
       }
