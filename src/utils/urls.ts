@@ -41,6 +41,7 @@ export const BACKEND_URL = {
     DELETE_PARTNER: "/partner/delete",
     SUSPEND_PARTNER: "/partner/suspend",
     UPDATE_PARTNER: "/partner/update",
+    VERIFY_PARTNER: "/partner/account/verify",
   },
   DASHBOARD: {
     DASHDRAFT: "/dashboard/drafts",

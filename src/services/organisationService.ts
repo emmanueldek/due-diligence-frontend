@@ -15,6 +15,7 @@ import {
   ITaxProps,
   IOwnerShipStructure,
 } from "@/interface/userCreation";
+import { VerifyPartner } from "@/pages/verifyPartner";
 
 interface IUploadImagePayload {
   flags?: string; // Optional property
@@ -361,6 +362,17 @@ export const deleteUser = async (id: string) => {
   try {
     const { data } = await recordsApi.delete(
       `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.DELETE_PARTNER}?partnerId=${id}`,
+    );
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+export const verifyPartner = async (id: string | undefined) => {
+  try {
+    const { data } = await recordsApi.post(
+      `${BACKEND_URL.VERSION.v1}${BACKEND_URL.PARTNER.VERIFY_PARTNER}?partnerId=${id}`,
     );
     return data;
   } catch (error) {

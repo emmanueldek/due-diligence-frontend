@@ -64,3 +64,15 @@ export const currentUser = async () => {
     throw handleApiError(error);
   }
 };
+
+export const createPartnerPassword = async (payload: any) => {
+  try {
+    const result = await recordsApi.patch(
+      `${BACKEND_URL.VERSION.v1}/partner/create-password?id=${payload?.id}`,
+      payload.data,
+    );
+    return result;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};

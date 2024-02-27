@@ -1,4 +1,5 @@
 import { Dashboard, Executives, Organisation, Settings, Users } from "./pages";
+import CreatePassword from "./pages/auth/CreatePassword";
 import ForgetPassword from "./pages/auth/ForgetPassword";
 import Login from "./pages/auth/Login";
 import { ResetVerify } from "./pages/auth/MailVerification";
@@ -53,5 +54,9 @@ export const authRoutes = [
   {
     path: "reset-password/:id",
     element: <ResetPassword />,
+  },
+  {
+    path: "create-new-password/:id",
+    element: <CreatePassword />,
   },
 ];

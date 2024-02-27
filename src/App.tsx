@@ -5,6 +5,7 @@ import ErrorPage from "./pages/error";
 import VerifyInvite from "./pages/auth/VerifyInvite";
 import Workspace from "./pages/auth/Workspace";
 import WorkspaceLayout from "./layout/WorkspaceLayout";
+import { VerifyPartner } from "./pages/verifyPartner";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/auth/workspace" element={<Workspace />} />
           <Route path="/workspace/invite/verify/:id" element={<VerifyInvite />} />
         </Route>
+        <Route path="/verify/:partnerId" element={<VerifyPartner />} />
       </Routes>
     </div>
   );
