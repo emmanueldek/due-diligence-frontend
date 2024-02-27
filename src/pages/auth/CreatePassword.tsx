@@ -16,7 +16,7 @@ const initialValues: ICreatePassword = {
 
 const CreatePassword: React.FC = () => {
   const params = useParams();
-  const partnerId = params.partnerId;
+  const partnerId = params.id;
 
   const { mutate, isLoading, error } = useMutation(createPartnerPassword, {
     onError: () => {
