@@ -288,7 +288,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
           <InputText
             id="fillingStatus"
             isRequired={true}
-            label="Filing Status"
+            label="Tax Status"
             placeholder="Status"
             value={values.fillingStatus}
             error={getError("fillingStatus")}
@@ -301,8 +301,8 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
           <InputText
             id="totalTaxLiability"
             isRequired={true}
-            label="Total Tax Liability"
-            placeholder="Enter total tax liability"
+            label="Amount"
+            placeholder="Enter amount"
             value={values.totalTaxLiability}
             error={getError("totalTaxLiability")}
             type="text"

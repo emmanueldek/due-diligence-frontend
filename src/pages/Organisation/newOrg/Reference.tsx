@@ -239,7 +239,7 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, next, execDocI
 
   return (
     <div>
-      <p className="font-[700] text-2xl">Reference / Reputation</p>
+      <p className="font-[700] text-2xl">References</p>
 
       <div className="space-y-2">
         {dataList?.map((data, i) => (
