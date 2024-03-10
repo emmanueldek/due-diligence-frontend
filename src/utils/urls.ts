@@ -94,6 +94,8 @@ export const BACKEND_URL = {
     UPDATE_PROFILE: "/auth/me/update",
   },
   UPLOADS: "/upload/files",
+  UPLOADPDF: "/upload/pdf",
+  RETRIEVEPDF: "/upload/retrieve-pdf",
 };
 
 export type RECORD_FLAGS =

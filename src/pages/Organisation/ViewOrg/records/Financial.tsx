@@ -3,6 +3,9 @@ import { GrAttachment } from "react-icons/gr";
 import { IoDocumentAttachSharp } from "react-icons/io5";
 import EmptyState from "@/components/EmptyState";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "@/utils/urls";
+// import { useQuery } from "@tanstack/react-query";
+// import { retrievePdf } from "@/services/organisationService";
 
 interface IFinancialDataProps {
   year?: string;
@@ -24,13 +27,45 @@ type Column = {
 const Financial: React.FC<IDataFInProps> = ({ data }) => {
   const newData: IFinancialDataProps[] = data ? data : [];
 
+  console.log(newData);
+
   const columns: Column[] = [
     { field: "year", header: "Year" },
     { field: "audFinancials", header: "Audited Financials" },
     { field: "audBy", header: "Audited by" },
     { field: "source", header: "source" },
-    { field: "fsDocuments", header: "" },
+    // { field: "fsDocuments", header: "" },
   ];
+  const userAuth = JSON.parse(sessionStorage.getItem("token") as string);
+  const token = userAuth.auth;
+  // const { refetch } = useQuery({
+  //   queryKey: ["retrievePdf", { name: fileName }],
+  //   queryFn: () => retrievePdf({ fileName }),
+  //   enabled: false,
+  // });
+
+  const downloadPdf = async (fileName: string | undefined) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_NOMDEK_ADMIN_URL}${BACKEND_URL.VERSION.v1}${
+          BACKEND_URL.RETRIEVEPDF
+        }?fileName=${fileName}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await response.blob();
+      const hrefUrl = URL.createObjectURL(data);
+      window.open(hrefUrl, "_blank");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -67,6 +102,8 @@ const Financial: React.FC<IDataFInProps> = ({ data }) => {
                             <Link to={`${items[col.field]}`}>
                               <GrAttachment />
                             </Link>
+                          ) : col.field === "audFinancials" ? (
+                            <p className="w-[50%]">{`${items[col.field]?.substring(0, 40)}...pdf`}</p>
                           ) : (
                             <>{items[col.field as keyof IFinancialDataProps]}</>
                           )}
@@ -87,11 +124,21 @@ const Financial: React.FC<IDataFInProps> = ({ data }) => {
             <div className="grid grid-cols-2 gap-5">
               {data?.map((item, i) => {
                 return (
-                  <Link key={i} to={`${item.fsDocuments}`}>
+                  <button
+                    onClick={() => {
+                      downloadPdf(item.fsDocuments);
+                    }}
+                    key={i}
+                  >
                     <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
                       <IoDocumentAttachSharp size={40} color="#808080" />
                     </div>
-                  </Link>
+                  </button>
+                  // <Link key={i} to={`${item.fsDocuments}`}>
+                  //   <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
+                  //     <IoDocumentAttachSharp size={40} color="#808080" />
+                  //   </div>
+                  // </Link>
                 );
               })}
             </div>

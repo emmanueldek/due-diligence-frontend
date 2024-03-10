@@ -20,6 +20,7 @@ interface IUploadImagePayload {
   flags?: string; // Optional property
   imageFile: FormData; // Assuming you're working with a File object
 }
+
 interface IProfile {
   profile: IProfileProps;
 }
@@ -168,6 +169,24 @@ export const useUploadImage = async (payload: IUploadImagePayload) => {
       `${BACKEND_URL.VERSION.v1}${BACKEND_URL.UPLOADS}${payload?.flags ? `?flag=${payload?.flags}` : ""} `,
       payload?.imageFile,
     );
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+export const useUploadPdf = async (payload: IUploadImagePayload) => {
+  try {
+    const { data } = await recordsApi.post(`${BACKEND_URL.VERSION.v1}${BACKEND_URL.UPLOADPDF}`, payload?.imageFile);
+    console.log("From Emmy", data);
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+export const retrievePdf = async ({ fileName }: any) => {
+  try {
+    const { data } = await recordsApi.get(`${BACKEND_URL.VERSION.v1}${BACKEND_URL.RETRIEVEPDF}?fileName=${fileName}`);
+    console.log(data);
     return data;
   } catch (error) {
     throw handleApiError(error);

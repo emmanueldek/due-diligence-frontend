@@ -7,7 +7,14 @@ import * as Yup from "yup";
 import SavePublish from "./savePublish";
 import { IDataProps, IFinancialProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadImage } from "@/services/organisationService";
+import {
+  acceptRecOrg,
+  acceptSugOrg,
+  getOrgData,
+  updateOrg,
+  // useUploadImage,
+  useUploadPdf,
+} from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { IoDocumentAttach } from "react-icons/io5";
@@ -63,11 +70,25 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
     console.log(finData?.data?.financialStatements);
   }, [finData?.data?.financialStatements]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  // const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  //   onSuccess: ({ data: uploadRes }) => {
+  //     Toast.success("File uploaded successfully");
+  //     setFile((prev: any) => {
+  //       return [...prev, uploadRes?.url];
+  //     });
+  //   },
+
+  //   onError: (error) => {
+  //     Toast.error("something went wrong");
+  //     console.log(error);
+  //   },
+  // });
+  const { mutate: postPdf, isLoading: pdfUploading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
+      console.log(uploadRes);
       Toast.success("File uploaded successfully");
       setFile((prev: any) => {
-        return [...prev, uploadRes?.url];
+        return [...prev, uploadRes?.name];
       });
     },
 
@@ -118,7 +139,7 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
       documentArray.forEach((doc) => {
         const imageFile = new FormData();
         imageFile.append("file", doc);
-        postImage({ imageFile, flags: "organizationDocuments" });
+        postPdf({ imageFile, flags: "organizationDocuments" });
       });
     }
   };
@@ -336,7 +357,7 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div className="mb-6">
             <InputFile onChange={(e) => handleUploads(e)} />
-            {progressLoading && (
+            {pdfUploading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>

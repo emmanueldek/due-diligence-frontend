@@ -11,7 +11,14 @@ import { useParams } from "react-router-dom";
 import { IoDocumentAttach } from "react-icons/io5";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { Circles, ProgressBar } from "react-loader-spinner";
-import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadImage } from "@/services/organisationService";
+import {
+  acceptRecOrg,
+  acceptSugOrg,
+  getOrgData,
+  updateOrg,
+  // useUploadImage,
+  useUploadPdf,
+} from "@/services/organisationService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
@@ -61,10 +68,25 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
     }
   }, [taxComplianceData?.data?.taxCompliance]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  // const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  //   onSuccess: ({ data: uploadRes }) => {
+  //     Toast.success("File uploaded successfully");
+  //     setFile((prev: any) => [...prev, uploadRes?.name]);
+  //   },
+
+  //   onError: (error) => {
+  //     Toast.error("something went wrong");
+  //     console.log(error);
+  //   },
+  // });
+
+  const { mutate: postPdf, isLoading: pdfUploading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
+      console.log(uploadRes);
       Toast.success("File uploaded successfully");
-      setFile((prev: any) => [...prev, uploadRes?.url]);
+      setFile((prev: any) => {
+        return [...prev, uploadRes?.name];
+      });
     },
 
     onError: (error) => {
@@ -72,7 +94,6 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
       console.log(error);
     },
   });
-  console.log(file);
 
   const { mutate: postTax } = useMutation(updateOrg, {
     onError: (error) => {
@@ -117,7 +138,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
       documentArray.forEach((doc) => {
         const imageFile = new FormData();
         imageFile.append("file", doc);
-        postImage({ imageFile, flags: "organizationDocuments" });
+        postPdf({ imageFile, flags: "organizationDocuments" });
       });
     }
   };
@@ -131,9 +152,9 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
     setOpen(null);
   };
 
-  const handleModal = (id: number) => {
-    setOpen(JSON.stringify(errors).length !== 2 ? null : id);
-  };
+  // const handleModal = (id: number) => {
+  //   setOpen(JSON.stringify(errors).length !== 2 ? null : id);
+  // };
 
   // const onSubmit = async (data: IOrganisationProps) => {
   //   const newData = {
@@ -314,7 +335,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div>
             <InputFile onChange={(e) => handleUploads(e)} />
-            {progressLoading && (
+            {pdfUploading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
               </div>
@@ -391,7 +412,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
               <p>{sugDocId ? "Accept Request" : recDocId ? "Accept Record" : "Save"}</p>
             )}
           </button>
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <button
               type="button"
               onClick={() => handleModal(2)}
@@ -399,7 +420,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
             >
               <p>Publish Organization</p>
             </button>
-          </div>
+          </div> */}
         </div>
         {open === 1 && <SaveDraftModal data={taxData} onClose={handleClose} next={next} setData={setData} />}
         {open === 2 && (

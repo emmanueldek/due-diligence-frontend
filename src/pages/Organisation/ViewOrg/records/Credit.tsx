@@ -23,6 +23,8 @@ type Column = {
 const Credit: React.FC<ICredit> = ({ data }) => {
   const newData: ICreditHistoryProps[] = data ? data : [];
 
+  console.log(newData);
+
   const columns: Column[] = [
     { field: "type", header: "Type" },
     { field: "date", header: "Date" },
