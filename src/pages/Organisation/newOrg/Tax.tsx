@@ -152,9 +152,9 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
     setOpen(null);
   };
 
-  // const handleModal = (id: number) => {
-  //   setOpen(JSON.stringify(errors).length !== 2 ? null : id);
-  // };
+  const handleModal = (id: number) => {
+    setOpen(JSON.stringify(errors).length !== 2 ? null : id);
+  };
 
   // const onSubmit = async (data: IOrganisationProps) => {
   //   const newData = {
@@ -412,7 +412,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
               <p>{sugDocId ? "Accept Request" : recDocId ? "Accept Record" : "Save"}</p>
             )}
           </button>
-          {/* <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2">
             <button
               type="button"
               onClick={() => handleModal(2)}
@@ -420,7 +420,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
             >
               <p>Publish Organization</p>
             </button>
-          </div> */}
+          </div>
         </div>
         {open === 1 && <SaveDraftModal data={taxData} onClose={handleClose} next={next} setData={setData} />}
         {open === 2 && (
