@@ -178,12 +178,23 @@ const CreateUser = () => {
                 )}
               </div>
               <div className="p-[1rem] flex justify-between items-center h-[90px]">
-                <TransparentBtn
+                {/* <TransparentBtn
                   text="Close"
                   onClick={() => {
                     setShowModal(false);
                   }}
-                />
+                /> */}
+                <p
+                  className=" py-2 px-3 rounded-md text-[14px] text-center
+                  font-medium transition-all duration-500 text-grey-900
+                  bg-transparent hover:bg-grey-100 outline outline-2 outline-offset-[-1px]
+                  outline-grey-400 hover:outline-none group flex justify-center items-center"
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                >
+                  Close
+                </p>
                 <PrimaryBtn text="Create Partner" type="submit" />
               </div>
             </motion.div>
