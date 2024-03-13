@@ -10,6 +10,9 @@ export interface IInsuranceProps {
   coverageAmount?: string;
   coverageStatus?: string;
   expiryDate?: string;
+  coverageType?: string;
+  insurer?: string;
+  insuranceStatus?: string;
   icDocuments?: string;
 }
 export interface ITaxProps {

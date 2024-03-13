@@ -270,7 +270,7 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
 
   return (
     <div>
-      <p className="font-[700] text-2xl mb-2">Management/Regulatory</p>
+      <p className="font-[700] text-2xl mb-2">Management</p>
 
       <div className="space-y-2">
         {dataList?.map((data, i) => (
@@ -349,7 +349,7 @@ const Management: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div className="mb-6">
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType="image/*" />
             {progressLoading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

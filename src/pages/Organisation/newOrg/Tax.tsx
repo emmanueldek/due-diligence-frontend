@@ -334,7 +334,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div>
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
             {pdfUploading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

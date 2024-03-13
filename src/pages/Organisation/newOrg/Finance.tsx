@@ -85,7 +85,6 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
   // });
   const { mutate: postPdf, isLoading: pdfUploading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
-      console.log(uploadRes);
       Toast.success("File uploaded successfully");
       setFile((prev: any) => {
         return [...prev, uploadRes?.name];
@@ -356,7 +355,7 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div className="mb-6">
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
             {pdfUploading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

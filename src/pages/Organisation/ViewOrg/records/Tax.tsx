@@ -23,8 +23,8 @@ const Tax: React.FC<IDataTaxProps> = ({ data }) => {
 
   const columns = [
     { field: "year", header: "Year" },
-    { field: "fillingStatus", header: "Filing Status" },
-    { field: "totalTaxLiability", header: "Total tax liability" },
+    { field: "fillingStatus", header: "Tax Status" },
+    { field: "totalTaxLiability", header: "Amount" },
     { field: "tcDocuments", header: "" },
   ];
 

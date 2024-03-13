@@ -8,7 +8,14 @@ import SavePublish from "./savePublish";
 import { IDataProps } from "@/interface/userCreation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { acceptRecOrg, acceptSugOrg, getSingleOrg, updateOrg, useUploadImage } from "@/services/organisationService";
+import {
+  acceptRecOrg,
+  acceptSugOrg,
+  getSingleOrg,
+  updateOrg,
+  useUploadImage,
+  useUploadPdf,
+} from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";
@@ -137,9 +144,9 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
     },
   });
 
-  const { mutate: uploadCAC, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: uploadCAC, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
-      setFile(uploadRes?.url);
+      setFile(uploadRes?.name);
       Toast.success("File uploaded successfully");
     },
 
@@ -424,7 +431,7 @@ const Profile: React.FC<IactionProps> = ({ next, prev, setData, execDocID, sugDo
         <div>
           <p className="text-sm mb-2 font-medium">Upload CAC document</p>
           <div className="mb-6">
-            <InputFile onChange={(e) => handleCACFileUpload(e)} />
+            <InputFile onChange={(e) => handleCACFileUpload(e)} fileType=".pdf" />
             {progressLoading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

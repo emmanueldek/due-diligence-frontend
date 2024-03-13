@@ -36,7 +36,7 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
       ) : (
         <>
           <div>
-            <p className="font-[700] 2xl">Legal/Regulatory</p>
+            <p className="font-[700] 2xl">Legal</p>
             <hr className="border-grey-50 mt-2 mb-5" />
           </div>
           <table className="w-full">

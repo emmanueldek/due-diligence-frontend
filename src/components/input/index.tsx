@@ -231,9 +231,10 @@ export const TextArea = ({ id, isRequired, name, placeholder, label, error, onCh
 
 interface IInputFileProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  fileType: string;
 }
 
-export const InputFile: React.FC<IInputFileProps> = ({ onChange }) => {
+export const InputFile: React.FC<IInputFileProps> = ({ onChange, fileType }) => {
   return (
     <div className="flex items-center justify-center w-full">
       <label
@@ -256,7 +257,7 @@ export const InputFile: React.FC<IInputFileProps> = ({ onChange }) => {
           </svg>
           <p className="text-xs text-grey-500">Click to upload or drag and drop</p>
         </div>
-        <input id="dropzone-file" type="file" className="hidden" onChange={onChange} multiple />
+        <input id="dropzone-file" type="file" className="hidden" onChange={onChange} multiple accept={fileType} />
       </label>
     </div>
   );

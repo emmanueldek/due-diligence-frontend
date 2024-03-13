@@ -7,7 +7,14 @@ import * as Yup from "yup";
 import SavePublish from "./savePublish";
 import { ICreditHistoryProps, IDataProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadImage } from "@/services/organisationService";
+import {
+  acceptRecOrg,
+  acceptSugOrg,
+  getOrgData,
+  updateOrg,
+  useUploadImage,
+  useUploadPdf,
+} from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { IoDocumentAttach } from "react-icons/io5";
@@ -63,10 +70,10 @@ const CreditHistory: React.FC<IactionProps> = ({ next, prev, data, setData, exec
     }
   }, [creditData?.data?.creditHistory]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile((prev: any) => [...prev, uploadRes?.url]);
+      setFile((prev: any) => [...prev, uploadRes?.name]);
     },
 
     onError: (error) => {
@@ -326,7 +333,7 @@ const CreditHistory: React.FC<IactionProps> = ({ next, prev, data, setData, exec
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div>
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
             {progressLoading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

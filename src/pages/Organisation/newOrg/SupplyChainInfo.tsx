@@ -300,7 +300,7 @@ const SupplyChainInfo: React.FC<IactionProps> = ({ next, prev, data, setData, ex
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div className="w-full">
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
             {progressLoading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

@@ -18,7 +18,7 @@ const Records: React.FC<IDataSetProps> = ({ data }) => {
     { name: "Managements", value: 2 },
     { name: "Credit History", value: 3 },
     { name: "Tax Compliance", value: 4 },
-    { name: "Legal/ Regulatory", value: 5 },
+    { name: "Legal", value: 5 },
     { name: "Insurance Coverage", value: 6 },
     { name: "References", value: 7 },
     { name: "Ownership Structure", value: 8 },

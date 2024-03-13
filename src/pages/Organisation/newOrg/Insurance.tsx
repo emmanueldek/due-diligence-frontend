@@ -14,7 +14,7 @@ import SaveDraftModal from "./SaveDraftModal";
 import SavePublish from "./savePublish";
 import { IDataProps, IInsuranceProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadImage } from "@/services/organisationService";
+import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";
@@ -23,10 +23,9 @@ import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 interface IOrganisationProps {
-  type?: string;
-  coverageAmount?: string;
-  coverageStatus?: string;
-  expiryDate?: string;
+  coverageType?: string;
+  insurer?: string;
+  insuranceStatus?: string;
 }
 
 interface IactionProps {
@@ -40,10 +39,9 @@ interface IactionProps {
 }
 
 const validationSchema = Yup.object({
-  coverageAmount: Yup.string().required("Please fill in this field"),
-  type: Yup.string().required("Please fill in this field"),
-  coverageStatus: Yup.string().required("Please fill in this field"),
-  expiryDate: Yup.string().required("Please fill in this field"),
+  coverageType: Yup.string().required("Please fill in this field"),
+  insurer: Yup.string().required("Please fill in this field"),
+  insuranceStatus: Yup.string().required("Please fill in this field"),
 });
 
 const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sugDocId, recDocId }) => {
@@ -69,10 +67,10 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
     }
   }, [InsurData?.data?.insuranceCoverage]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile((prev: any) => [...prev, uploadRes?.url]);
+      setFile((prev: any) => [...prev, uploadRes?.name]);
     },
 
     onError: (error) => {
@@ -156,7 +154,7 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
     const checkIfDataExist: () => boolean = () => {
       let res = false;
       dataList.forEach((item) => {
-        if (item.type !== data.type) {
+        if (item.coverageType !== data.coverageType) {
           res = false;
         } else {
           res = true;
@@ -196,7 +194,6 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
     type: "",
     coverageAmount: "",
     coverageStatus: "",
-    expiryDate: "",
   };
 
   const handleClose = () => {
@@ -278,7 +275,7 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
             key={i}
             onClick={() => handleEdit(i)} // Allow editing when a row is clicked
           >
-            <p>{data.type}</p>
+            <p>{data.coverageType}</p>
             <div className="flex space-x-1">
               {check === i ? <IoChevronDown /> : <IoChevronUp />}
               <IoRemoveOutline onClick={() => handleDelete(i)} />
@@ -290,44 +287,44 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
       <form action="" onSubmit={handleSubmit} className="my-5 space-y-5">
         <div>
           <InputText
-            id="type"
+            id="coverageType"
             isRequired={true}
-            label="Type"
-            placeholder="Enter type"
+            label="Coverage Type"
+            placeholder="Enter Coverage type"
             value={values.type}
-            error={getError("type")}
+            error={getError("coverageType")}
             type="text"
             onChange={handleChange}
-            name="type"
+            name="coverageType"
           />
         </div>
         <div>
           <InputText
-            id="coverageAmount"
+            id="insurer"
             isRequired={true}
-            label="Coverage Amount"
-            placeholder="Enter coverage amount"
+            label="Insurer"
+            placeholder="Enter Insurer"
             value={values.coverageAmount}
-            error={getError("coverageAmount")}
+            error={getError("insurer")}
             type="text"
             onChange={handleChange}
-            name="coverageAmount"
+            name="insurer"
           />
         </div>
         <div>
           <InputText
-            id="coverageStatus"
+            id="insuranceStatus"
             isRequired={true}
-            label="Coverage Status"
-            placeholder="Enter coverage status"
-            value={values.coverageStatus}
-            error={getError("coverageStatus")}
+            label="Insurance Status"
+            placeholder="Enter Insurance Status"
+            value={values.insuranceStatus}
+            error={getError("insuranceStatus")}
             type="text"
             onChange={handleChange}
-            name="coverageStatus"
+            name="insuranceStatus"
           />
         </div>
-        <div>
+        {/* <div>
           <InputText
             id="expiryDate"
             isRequired={true}
@@ -339,11 +336,11 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
             onChange={handleChange}
             name="expiryDate"
           />
-        </div>
+        </div> */}
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div>
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
             {progressLoading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
