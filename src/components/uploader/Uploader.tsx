@@ -2,7 +2,7 @@ import React from "react";
 import { InputFile } from "..";
 import { ProgressBar } from "react-loader-spinner";
 import { useMutation } from "@tanstack/react-query";
-import { useUploadImage, useUploadPdf } from "@/services/organisationService";
+import { useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { IoDocumentAttach } from "react-icons/io5";
 import { RiDeleteBin5Fill } from "react-icons/ri";
