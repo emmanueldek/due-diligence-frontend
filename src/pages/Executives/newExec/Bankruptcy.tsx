@@ -40,7 +40,7 @@ const Bankruptcy: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
-      console.error("Please select only one image");
+      console.error("Please select only one file");
       return;
     }
 
@@ -181,7 +181,7 @@ const Bankruptcy: React.FC<IactionProps> = ({ next, prev, data, setData, execDoc
         </div>
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
-          <InputFile onChange={(e) => handleSelect(e)} />
+          <InputFile onChange={(e) => handleSelect(e)} fileType=".pdf" />
         </div>
 
         <button

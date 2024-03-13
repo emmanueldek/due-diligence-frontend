@@ -1,7 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import close from "../../assets/icons/close.svg";
-import { InputText, PrimaryBtn, TransparentBtn } from "@/components";
+import { InputText, PrimaryBtn } from "@/components";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";

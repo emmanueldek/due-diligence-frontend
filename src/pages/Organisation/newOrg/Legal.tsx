@@ -14,14 +14,7 @@ import SaveDraftModal from "./SaveDraftModal";
 import SavePublish from "./savePublish";
 import { IDataProps, ILegalProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  acceptRecOrg,
-  acceptSugOrg,
-  getOrgData,
-  updateOrg,
-  useUploadImage,
-  useUploadPdf,
-} from "@/services/organisationService";
+import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";

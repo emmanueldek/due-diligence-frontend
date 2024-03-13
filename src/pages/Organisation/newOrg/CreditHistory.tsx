@@ -7,14 +7,7 @@ import * as Yup from "yup";
 import SavePublish from "./savePublish";
 import { ICreditHistoryProps, IDataProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  acceptRecOrg,
-  acceptSugOrg,
-  getOrgData,
-  updateOrg,
-  useUploadImage,
-  useUploadPdf,
-} from "@/services/organisationService";
+import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { IoDocumentAttach } from "react-icons/io5";

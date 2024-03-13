@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import SaveDraftModal from "./SaveDraftModal";
 import SavePublish from "./savePublish";
 import { IDataProps, IReferenceProps } from "@/interface/userCreation";
-import { useUploadImage } from "@/services/organisationService";
+import { useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";
@@ -57,11 +57,11 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
     }
   }, [refData?.data?.referencesReputation]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
       console.log(uploadRes);
       Toast.success("File uploaded successfully");
-      setFile((prev: any) => [...prev, uploadRes?.url]);
+      setFile((prev: any) => [...prev, uploadRes?.name]);
     },
 
     onError: (error) => {
@@ -282,7 +282,7 @@ const Reference: React.FC<IactionProps> = ({ prev, data, setData, execDocID, sug
         <div>
           <p className="text-sm mb-2 font-medium">Upload supporting document</p>
           <div>
-            <InputFile onChange={(e) => handleUploads(e)} />
+            <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
             {progressLoading && (
               <div>
                 <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

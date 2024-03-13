@@ -13,14 +13,7 @@ import * as Yup from "yup";
 import SaveDraftModal from "./SaveDraftModal";
 import SavePublish from "./savePublish";
 import { IDataProps, IReferenceProps } from "@/interface/userCreation";
-import {
-  acceptRecOrg,
-  acceptSugOrg,
-  getOrgData,
-  updateOrg,
-  useUploadImage,
-  useUploadPdf,
-} from "@/services/organisationService";
+import { acceptRecOrg, acceptSugOrg, getOrgData, updateOrg, useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";

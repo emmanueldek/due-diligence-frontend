@@ -7,7 +7,7 @@ import SaveDraftModal from "./SaveDraftModal";
 import SavePublish from "./savePublish";
 import { IDataProps, IFinancialProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useUploadImage } from "@/services/organisationService";
+import { useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { IoDocumentAttach } from "react-icons/io5";
@@ -63,11 +63,11 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
       setDataList(finData?.data?.financialStatements);
   }, [finData?.data?.financialStatements]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
       console.log(uploadRes);
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile(uploadRes?.name);
     },
 
     onError: (error) => {
@@ -301,7 +301,7 @@ const Finance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID,
             </div>
           ) : (
             <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
+              <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
               {progressLoading && (
                 <div>
                   <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

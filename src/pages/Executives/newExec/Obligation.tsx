@@ -14,7 +14,7 @@ import SaveDraftModal from "./SaveDraftModal";
 import SavePublish from "./savePublish";
 import { IContractProps, IDataProps } from "@/interface/userCreation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useUploadImage } from "@/services/organisationService";
+import { useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { useParams } from "react-router-dom";
 import { Circles, ProgressBar } from "react-loader-spinner";
@@ -72,10 +72,10 @@ const Credit: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, 
     }
   }, [contractualData?.data?.contractualObligations]);
 
-  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile(uploadRes?.url);
+      setFile(uploadRes?.name);
     },
 
     onError: (error) => {
@@ -309,7 +309,7 @@ const Credit: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, 
             </div>
           ) : (
             <div>
-              <InputFile onChange={(e) => handleUploads(e)} />
+              <InputFile onChange={(e) => handleUploads(e)} fileType=".pdf" />
               {progressLoading && (
                 <div>
                   <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />

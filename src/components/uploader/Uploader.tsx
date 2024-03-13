@@ -2,7 +2,7 @@ import React from "react";
 import { InputFile } from "..";
 import { ProgressBar } from "react-loader-spinner";
 import { useMutation } from "@tanstack/react-query";
-import { useUploadImage } from "@/services/organisationService";
+import { useUploadImage, useUploadPdf } from "@/services/organisationService";
 import { Toast } from "@/config/toast";
 import { IoDocumentAttach } from "react-icons/io5";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -13,9 +13,9 @@ type IUploaderProps = {
 };
 
 const Uploader: React.FC<IUploaderProps> = ({ file, setFile }) => {
-  const { mutate: uploadCAC, isLoading: progressLoading } = useMutation(useUploadImage, {
+  const { mutate: uploadCAC, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
-      setFile(uploadRes?.url);
+      setFile(uploadRes?.name);
       Toast.success("File uploaded successfully");
     },
 
@@ -40,7 +40,7 @@ const Uploader: React.FC<IUploaderProps> = ({ file, setFile }) => {
     <div>
       <p className="text-sm mb-2 font-medium">Upload CAC document</p>
       <div className="mb-6">
-        <InputFile onChange={(e) => handleCACFileUpload(e)} />
+        <InputFile onChange={(e) => handleCACFileUpload(e)} fileType=".pdf" />
         {progressLoading && (
           <div>
             <ProgressBar height={30} width={""} borderColor="#000000" barColor="#008000" />
