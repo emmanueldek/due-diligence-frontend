@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { GrAttachment } from "react-icons/gr";
 import { IoDocumentAttachSharp } from "react-icons/io5";
 import EmptyState from "@/components/EmptyState";
@@ -90,9 +89,7 @@ const Reference: React.FC<IDataRefProps> = ({ data }) => {
                           className={`px-2 text-grey-500 py-2 ${col.field === "audFinancials" ? "text-[#144D98]" : ""}`}
                         >
                           {col.field === "rrDocuments" ? (
-                            <Link to={`${items[col.field]}`}>
-                              <GrAttachment />
-                            </Link>
+                            <GrAttachment />
                           ) : col.field === "expiryDate" ? (
                             <>{formatDateString(items[col.field] || "")}</>
                           ) : (

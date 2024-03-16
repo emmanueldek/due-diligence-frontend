@@ -22,8 +22,6 @@ type Column = {
 
 const Legal: React.FC<IDataLegalProps> = ({ data }) => {
   const newData: ILegalProps[] = data ? data : [];
-  const userAuth = JSON.parse(sessionStorage.getItem("token") as string);
-  const token = userAuth.auth;
 
   const columns: Column[] = [
     { field: "year", header: "Year" },
@@ -31,6 +29,9 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
     { field: "totalTaxLiability", header: "Total tax liability" },
     { field: "lgrDocuments", header: "" },
   ];
+
+  const userAuth = JSON.parse(sessionStorage.getItem("token") as string);
+  const token = userAuth.auth;
 
   const downloadPdf = async (fileName: string | undefined) => {
     try {
