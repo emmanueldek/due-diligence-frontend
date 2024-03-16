@@ -194,6 +194,7 @@ const Tax: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, sug
       ...data,
       tcDocuments: file,
     };
+    console.log(newData);
     if (dataTab !== null && isDataExist) {
       // Update existing entry in the dataList
       const updatedDataList = [...dataList];

@@ -81,13 +81,7 @@ const Tax: React.FC<IDataTaxProps> = ({ data }) => {
                           key={j}
                           className={`px-2 text-grey-500 py-2 ${col.field === "audFinancials" ? "text-[#144D98]" : ""}`}
                         >
-                          {col.field === "tcDocuments" ? (
-                            <Link to={`${items[col.field]}`}>
-                              <GrAttachment />
-                            </Link>
-                          ) : (
-                            <>{items[col.field as keyof ITaxProps]}</>
-                          )}
+                          {col.field === "tcDocuments" ? <GrAttachment /> : <>{items[col.field as keyof ITaxProps]}</>}
                         </td>
                       </>
                     );
@@ -105,11 +99,15 @@ const Tax: React.FC<IDataTaxProps> = ({ data }) => {
             <div className="grid grid-cols-2 gap-5">
               {newData?.map((item, i) => {
                 return (
-                  <button key={i} onClick={() => downloadPdf(item.tcDocuments)}>
-                    <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
-                      <IoDocumentAttachSharp size={40} color="#808080" />
-                    </div>
-                  </button>
+                  <>
+                    {item.tcDocuments && item.tcDocuments?.length > 0 && (
+                      <button key={i} onClick={() => downloadPdf(item.tcDocuments)}>
+                        <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
+                          <IoDocumentAttachSharp size={40} color="#808080" />
+                        </div>
+                      </button>
+                    )}
+                  </>
                 );
               })}
             </div>

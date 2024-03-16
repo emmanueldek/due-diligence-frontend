@@ -4,6 +4,7 @@ import { GrAttachment } from "react-icons/gr";
 import { IoDocumentAttachSharp } from "react-icons/io5";
 import EmptyState from "@/components/EmptyState";
 import { formatDateString } from "@/utils/format";
+import { BACKEND_URL } from "@/utils/urls";
 
 export interface IReferenceProps {
   coverageAmount?: string;
@@ -23,6 +24,9 @@ type Column = {
 const Reference: React.FC<IDataRefProps> = ({ data }) => {
   const newData: IReferenceProps[] = data ? data : [];
 
+  const userAuth = JSON.parse(sessionStorage.getItem("token") as string);
+  const token = userAuth.auth;
+
   const columns: Column[] = [
     { field: "name", header: "Name" },
     // { field: "coverageAmount", header: "Coverage Amount" },
@@ -30,6 +34,29 @@ const Reference: React.FC<IDataRefProps> = ({ data }) => {
     { field: "referenceDate", header: "Reference Date" },
     { field: "rrDocuments", header: "" },
   ];
+
+  const downloadPdf = async (fileName: string | undefined) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_NOMDEK_ADMIN_URL}${BACKEND_URL.VERSION.v1}${
+          BACKEND_URL.RETRIEVEPDF
+        }?fileName=${fileName}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await response.blob();
+      const hrefUrl = URL.createObjectURL(data);
+      window.open(hrefUrl, "_blank");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -88,11 +115,11 @@ const Reference: React.FC<IDataRefProps> = ({ data }) => {
             <div className="grid grid-cols-2 gap-5">
               {newData?.map((item, i) => {
                 return (
-                  <Link key={i} to={`${item.rrDocuments}`}>
+                  <button key={i} onClick={() => downloadPdf(item.rrDocuments)}>
                     <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
                       <IoDocumentAttachSharp size={40} color="#808080" />
                     </div>
-                  </Link>
+                  </button>
                 );
               })}
             </div>

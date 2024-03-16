@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { GrAttachment } from "react-icons/gr";
 import { IoDocumentAttachSharp } from "react-icons/io5";
 import EmptyState from "@/components/EmptyState";
+import { BACKEND_URL } from "@/utils/urls";
 
 interface ICreditHistoryProps {
   type?: string;
@@ -32,6 +33,32 @@ const Credit: React.FC<ICredit> = ({ data }) => {
     { field: "debtsDischarged", header: "Debts Discharged" },
     { field: "crdDocuments", header: "" },
   ];
+
+  const userAuth = JSON.parse(sessionStorage.getItem("token") as string);
+  const token = userAuth.auth;
+
+  const downloadPdf = async (fileName: string | undefined) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_NOMDEK_ADMIN_URL}${BACKEND_URL.VERSION.v1}${
+          BACKEND_URL.RETRIEVEPDF
+        }?fileName=${fileName}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await response.blob();
+      const hrefUrl = URL.createObjectURL(data);
+      window.open(hrefUrl, "_blank");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -88,11 +115,11 @@ const Credit: React.FC<ICredit> = ({ data }) => {
             <div className="grid grid-cols-2 gap-5">
               {newData?.map((item, i) => {
                 return (
-                  <Link key={i} to={`${item.crdDocuments}`}>
+                  <button key={i} onClick={() => downloadPdf(item.crdDocuments)}>
                     <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
                       <IoDocumentAttachSharp size={40} color="#808080" />
                     </div>
-                  </Link>
+                  </button>
                 );
               })}
             </div>
