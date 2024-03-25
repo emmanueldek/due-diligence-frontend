@@ -191,9 +191,9 @@ const Insurance: React.FC<IactionProps> = ({ next, prev, data, setData, execDocI
   };
 
   const initialValues: IInsuranceProps = {
-    type: "",
-    coverageAmount: "",
-    coverageStatus: "",
+    coverageType: "",
+    insurer: "",
+    insuranceStatus: "",
   };
 
   const handleClose = () => {
