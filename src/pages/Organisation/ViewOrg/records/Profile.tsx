@@ -2,12 +2,37 @@ import React from "react";
 
 import { IProfileProps } from "@/interface/userCreation";
 import { PrimaryBtn } from "@/components";
+import { BACKEND_URL } from "@/utils/urls";
 
 interface IOrgDataProfile {
   data: IProfileProps;
 }
 
 const Profile: React.FC<IOrgDataProfile> = ({ data }) => {
+  const userAuth = JSON.parse(sessionStorage.getItem("token") as string);
+  const token = userAuth.auth;
+  const downloadPdf = async (fileName: string | undefined) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_NOMDEK_ADMIN_URL}${BACKEND_URL.VERSION.v1}${
+          BACKEND_URL.RETRIEVEPDF
+        }?fileName=${fileName}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await response.blob();
+      const hrefUrl = URL.createObjectURL(data);
+      window.open(hrefUrl, "_blank");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div>
@@ -50,11 +75,11 @@ const Profile: React.FC<IOrgDataProfile> = ({ data }) => {
             {data?.cacDocument ? (
               <div className="w-full sm:w-[190px] md:w-[250px]">
                 <div className="w-full h-[160px] bg-grey-50 rounded-md overflow-hidden group">
-                  <a href={`https://${data?.cacDocument}`} target="_blank">
+                  <button onClick={() => downloadPdf(data.cacDocument)}>
                     <div className="hidden h-full transition-all group-hover:flex justify-center items-center group-hover:bg-grey-200">
                       <PrimaryBtn text="open" />
                     </div>
-                  </a>
+                  </button>
                 </div>
 
                 {/* </a> */}
