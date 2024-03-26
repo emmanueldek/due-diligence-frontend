@@ -6,6 +6,7 @@ import VerifyInvite from "./pages/auth/VerifyInvite";
 import Workspace from "./pages/auth/Workspace";
 import WorkspaceLayout from "./layout/WorkspaceLayout";
 import { VerifyPartner } from "./pages/verifyPartner";
+import ShareHolders from "./pages/shareholders/ShareHolders";
 
 function App() {
   return (
@@ -23,7 +24,12 @@ function App() {
           {appRoutes.map((appRoute, index) => {
             const { path, element } = appRoute;
 
-            return <Route key={index} path={path} element={element} />;
+            return (
+              <>
+                <Route key={index} path={path} element={element} />
+                <Route key={index} path="/shareholders/:shareHolder" element={<ShareHolders />} />
+              </>
+            );
           })}
         </Route>
 

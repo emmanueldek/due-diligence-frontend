@@ -51,3 +51,14 @@ export const deleteRequest = async (requestId: string) => {
     throw handleApiError(error);
   }
 };
+
+export const getShareHolderDetails = async ({ id }: any) => {
+  try {
+    const { data } = await recordsApi.get(
+      `${BACKEND_URL.VERSION.v1}/${BACKEND_URL.SHAREHOLDER.GETSHAREHOLDER}?keyword=${id}`,
+    );
+    return data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};

@@ -2,6 +2,7 @@ export const BACKEND_URL = {
   VERSION: {
     V1: "/api/v1",
   },
+
   EXECUTIVE: {
     EXECUTIVES_ACTIONS: "/executive/all",
     AUDIT_TRAIL: "/executive/audit-trail",

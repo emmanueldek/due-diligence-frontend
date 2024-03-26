@@ -10,6 +10,9 @@ export const BACKEND_URL = {
   VERSION: {
     v1: "/api/v1",
   },
+  SHAREHOLDER: {
+    GETSHAREHOLDER: "organization/confirm-ownership-structure",
+  },
   EXECUTIVE: {
     EXECUTIVES_ACTIONS: "/executive/all",
     AUDIT_TRAIL: "/executive/audit-trail",
