@@ -19,7 +19,7 @@ const Records: React.FC<IDataSetProps> = ({ data }) => {
     { name: "Credit History", value: 3 },
     { name: "Tax Compliance", value: 4 },
     { name: "Legal", value: 5 },
-    { name: "Insurance Coverage", value: 6 },
+    // { name: "Insurance Coverage", value: 6 },
     { name: "References", value: 7 },
     { name: "Ownership Structure", value: 8 },
   ];
@@ -38,8 +38,8 @@ const Records: React.FC<IDataSetProps> = ({ data }) => {
         return <Tax data={data?.theOrganization?.taxCompliance || []} />;
       case 5:
         return <Legal data={data?.theOrganization?.legalRegulatory || []} />;
-      case 6:
-        return <Insurance data={data?.theOrganization?.insuranceCoverage || []} />;
+      // case 6:
+      //   return <Insurance data={data?.theOrganization?.insuranceCoverage || []} />;
       case 7:
         return <Reference data={data?.theOrganization?.referencesReputation || []} />;
       case 8:

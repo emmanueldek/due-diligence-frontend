@@ -307,8 +307,8 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
           <InputText
             id="totalTaxLiability"
             isRequired={true}
-            label="Total Tax Liability"
-            placeholder="Enter total tax liability"
+            label="Litigation Description"
+            placeholder="Enter Litigation description"
             value={values.totalTaxLiability}
             error={getError("totalTaxLiability")}
             type="text"

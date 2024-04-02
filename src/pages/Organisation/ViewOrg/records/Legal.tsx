@@ -26,7 +26,7 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
   const columns: Column[] = [
     { field: "year", header: "Year" },
     { field: "fillingStatus", header: "Filing Status" },
-    { field: "totalTaxLiability", header: "Total tax liability" },
+    { field: "totalTaxLiability", header: "Litigation Description" },
     { field: "lgrDocuments", header: "" },
   ];
 

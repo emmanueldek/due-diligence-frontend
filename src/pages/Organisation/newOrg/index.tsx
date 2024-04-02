@@ -64,7 +64,7 @@ const NewOrganisation: React.FC = () => {
     { name: "Legal", value: 5 },
     // { name: "Credit Rating", value: 6 },
     // { name: "Contractual Obligations", value: 7 },
-    { name: "Insurance Coverage", value: 6 },
+    // { name: "Insurance Coverage", value: 6 },
     // { name: "Supply Chain Information", value: 9 },
     { name: "References", value: 7 },
     { name: "Ownership Structure", value: 8 },
@@ -175,18 +175,18 @@ const NewOrganisation: React.FC = () => {
       //       recDocId={recDocId}
       //     />
       //   );
-      case 6:
-        return (
-          <Insurance
-            next={next}
-            prev={prev}
-            data={data}
-            setData={setData}
-            execDocID={execDocId}
-            sugDocId={sugDocId}
-            recDocId={recDocId}
-          />
-        );
+      // case 6:
+      //   return (
+      //     <Insurance
+      //       next={next}
+      //       prev={prev}
+      //       data={data}
+      //       setData={setData}
+      //       execDocID={execDocId}
+      //       sugDocId={sugDocId}
+      //       recDocId={recDocId}
+      //     />
+      //   );
       // case 9:
       //   return (
       //     <SupplyChainInfo
