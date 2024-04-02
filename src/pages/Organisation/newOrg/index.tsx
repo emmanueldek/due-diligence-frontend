@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import Finance from "./Finance";
 import Tax from "./Tax";
 import Legal from "./Legal";
-import Insurance from "./Insurance";
+// import Insurance from "./Insurance";
 import Reference from "./Reference";
 import { IDataProps } from "@/interface/userCreation";
 import Management from "./Management";

@@ -4,7 +4,7 @@ import Financial from "./Financial";
 import Tax from "./Tax";
 import Legal from "./Legal";
 import Credit from "./Credit";
-import Insurance from "./Insurance";
+// import Insurance from "./Insurance";
 import Reference from "./Reference";
 import { IDataSetProps } from "@/interface/organisationTypes";
 import Management from "./Management";
