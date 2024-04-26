@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { GrAttachment } from "react-icons/gr";
-import { IoDocumentAttachSharp } from "react-icons/io5";
+
 import EmptyState from "@/components/EmptyState";
 import { BACKEND_URL } from "@/utils/urls";
 
@@ -9,7 +7,7 @@ export interface ILegalProps {
   year?: string;
   filingStatus?: string;
   totalTaxLiability?: string;
-  lgrDocuments?: string;
+  lgrDocuments?: string[];
 }
 
 interface IDataLegalProps {
@@ -88,10 +86,24 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
                           className={`px-2 text-grey-500 py-2 ${col.field === "audFinancials" ? "text-[#144D98]" : ""}`}
                         >
                           {col.field === "lgrDocuments" ? (
-                            <Link to={`${items[col.field]}`}>
-                              <GrAttachment />
-                            </Link>
+                            <div className="flex flex-col justify-start gap-3">
+                              {items.lgrDocuments &&
+                                items.lgrDocuments.map((item: string, i: number) => {
+                                  return (
+                                    <p
+                                      className="text-xs text-[#0029FD] text-left cursor-pointer"
+                                      onClick={() => downloadPdf(item)}
+                                      key={i}
+                                    >
+                                      {item}
+                                    </p>
+                                  );
+                                })}
+                            </div>
                           ) : (
+                            // <Link to={`${items[col.field]}`}>
+                            //   <GrAttachment />
+                            // </Link>
                             <>{items[col.field as keyof ILegalProps]}</>
                           )}
                         </td>
@@ -103,7 +115,7 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
               ))}
             </tbody>
           </table>
-          <div>
+          {/* <div>
             <div>
               <p className="font-[700] 2xl mt-5">Documents</p>
               <hr className="border-grey-50 mt-2 mb-5" />
@@ -119,7 +131,7 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
                 );
               })}
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </div>

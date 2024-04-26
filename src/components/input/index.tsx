@@ -56,7 +56,7 @@ interface IInputProps {
   placeholder: string;
   label: string;
   value?: string | number;
-  error?: string | boolean;
+  error?: string | boolean | undefined | string[];
   type?: string;
   className?: string;
   checked?: boolean;

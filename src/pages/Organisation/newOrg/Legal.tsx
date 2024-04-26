@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { InputFile, InputText } from "@/components";
-import {
-  IoChevronBack,
-  IoChevronDown,
-  IoChevronForward,
-  IoChevronUp,
-  IoDocumentAttach,
-  IoRemoveOutline,
-} from "react-icons/io5";
+import { IoChevronBack, IoChevronForward, IoDocumentAttach } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SaveDraftModal from "./SaveDraftModal";
@@ -26,6 +19,7 @@ interface IOrganisationProps {
   year?: string;
   fillingStatus?: string;
   totalTaxLiability?: string;
+  lgrDocuments: string[];
 }
 
 interface IactionProps {
@@ -55,6 +49,14 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
   const [open, setOpen] = useState<number | null>(null);
   const legalData = { legal: dataList };
   const [checkAdd, setCheckAdd] = useState(false);
+  const [availableFiles, setAvailableFiles] = useState<string[]>([]);
+
+  const columns: any = [
+    { field: "year", header: "Year" },
+    { field: "fillingStatus", header: "Filing Status" },
+    { field: "totalTaxLiability", header: "Litigation Description" },
+    { field: "lgrDocuments", header: "Attachments" },
+  ];
 
   const { data: legalRegulatoryData, isLoading: incomingData } = useQuery(
     ["orgLegal", "legalRegulatory", requestId],
@@ -73,7 +75,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
   const { mutate: postImage, isLoading: progressLoading } = useMutation(useUploadPdf, {
     onSuccess: ({ data: uploadRes }) => {
       Toast.success("File uploaded successfully");
-      setFile((prev: any) => [...prev, uploadRes?.name]);
+      setAvailableFiles((prev: any) => [...prev, uploadRes?.name]);
     },
 
     onError: (error) => {
@@ -117,10 +119,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
   });
 
   const handleUploads = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      console.error("Please select only one image");
-      return;
-    } else {
+    if (e.target.files) {
       let documentArray = Array.from(e.target.files);
       documentArray.forEach((doc) => {
         const imageFile = new FormData();
@@ -133,6 +132,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
     year: "",
     filingStatus: "",
     totalTaxLiability: "",
+    lgrDocuments: [],
   };
 
   const handleClose = () => {
@@ -163,13 +163,21 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
 
     const checkIfDataExist: () => boolean = () => {
       let res = false;
-      dataList.forEach((item) => {
-        if (item.year !== data.year) {
-          res = false;
-        } else {
+      // dataList.forEach((item) => {
+      //   let currItem = item
+      //   if (item.year != data.year) {
+      //     res = false;
+      //   } else {
+      //     res = true;
+      //   }
+      // });
+      for (let i = 0; i <= dataList.length; i++) {
+        if (dataList[i].year === data.year) {
           res = true;
+          break;
         }
-      });
+        res = false;
+      }
       return res;
     };
 
@@ -178,8 +186,9 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
 
     const newData = {
       ...data,
-      lgrDocuments: file,
+      lgrDocuments: availableFiles,
     };
+    console.log(newData);
     if (dataTab !== null && isDataExist) {
       // Update existing entry in the dataList
       const updatedDataList = [...dataList];
@@ -187,7 +196,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
       setDataList(updatedDataList);
       setDataTab(null); // Clear the selected index
       resetForm();
-      setFile([]);
+      setAvailableFiles([]);
     } else if (dataTab === null && !isDataExist) {
       setDataList([...dataList, newData]);
       if (checkAdd) {
@@ -197,6 +206,8 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
       }
     } else if (dataTab === null && isDataExist) {
       toast.error("Data already exist");
+    } else if (dataTab !== null && !isDataExist) {
+      toast.error("Da");
     }
   };
 
@@ -230,10 +241,13 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
   });
 
   const handleEdit = (index: number) => {
+    let selectedData = dataList[index];
     // Set the form fields with data from the selected index
-    setValues(dataList[index]);
+    setValues(selectedData);
     setCheck(index);
     setDataTab(index); // Set the selected index
+    console.log(selectedData);
+    setAvailableFiles((prev: string[]) => [...prev, ...selectedData.lgrDocuments]);
   };
 
   const handleDelete = (index: number) => {
@@ -261,19 +275,58 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
       <p className="font-[700] text-2xl">Legal</p>
 
       <div className="space-y-2">
-        {dataList?.map((data, i) => (
-          <div
-            className="rounded-md bg-grey-100 p-3 flex items-center justify-between"
-            key={i}
-            onClick={() => handleEdit(i)} // Allow editing when a row is clicked
-          >
-            <p>{data.year}</p>
-            <div className="flex space-x-1">
-              {check === i ? <IoChevronDown /> : <IoChevronUp />}
-              <IoRemoveOutline onClick={() => handleDelete(i)} />
-            </div>
-          </div>
-        ))}
+        <table className="w-full">
+          <thead>
+            <tr className="h-[50px] px-8 rounded overflow-hidden bg-grey-50 w-full">
+              {columns &&
+                columns.map((head: any, k: number) => (
+                  <th key={k} className="px-2 text-left text-sm text-[#353740]">
+                    {head.header}{" "}
+                  </th>
+                ))}
+            </tr>
+          </thead>
+          <tbody>
+            {dataList?.map((data: any, i) => (
+              // <div
+              //   className="rounded-md bg-grey-100 p-3 flex items-center justify-between"
+              //   key={i}
+              //   onClick={() => handleEdit(i)} // Allow editing when a row is clicked
+              // >
+              //   <p>{data.year}</p>
+              //   <div className="flex space-x-1">
+              //     {check === i ? <IoChevronDown /> : <IoChevronUp />}
+              //     <IoRemoveOutline onClick={() => handleDelete(i)} />
+              //   </div>
+              // </div>
+              <tr key={i} className="hover:bg-[#fbfbfb] transition-all cursor-pointer" onClick={() => handleEdit(i)}>
+                {columns.map((col: any, j: number) => {
+                  return (
+                    <>
+                      <td
+                        key={j}
+                        className={`px-2 text-grey-500 py-2 ${col.field === "audFinancials" ? "text-[#144D98]" : ""}`}
+                      >
+                        {col.field === "lgrDocuments" ? (
+                          <>
+                            {data.lgrDocuments.map((doc: string, k: number) => (
+                              <div className="flex space-x-1" key={k}>
+                                <p className="text-xs text-[#0029FD]">{doc}</p>
+                              </div>
+                            ))}
+                          </>
+                        ) : (
+                          <>{data[col.field as keyof ILegalProps]}</>
+                        )}
+                      </td>
+                    </>
+                  );
+                })}
+                <hr />
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <form action="" onSubmit={handleSubmit} className="my-5 space-y-5">
@@ -327,22 +380,22 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
             )}
           </div>
           <div className="flex items-center space-x-3 mt-3">
-            {file &&
-              file.map((f: any, i: number) => {
+            {availableFiles &&
+              availableFiles.map((f: any, i: number) => {
                 return (
                   <div key={i}>
                     <div className="flex items-center space-x-3">
-                      <div className="bg-grey-100 rounded w-[100px] h-[128px] flex items-center justify-center">
-                        <IoDocumentAttach size={50} color="#808080" />
+                      <div className="bg-grey-100 rounded w-[90px] h-[108px] flex items-center justify-center">
+                        <IoDocumentAttach size={30} color="#808080" />
                       </div>
                       <div
                         className="rounded-full flex items-center justify-center bg-red-500 w-[20px] h-[20px] active:bg-red-800 cursor-pointer"
-                        onClick={() => setFile((prev) => prev.filter((_: any, index: number) => index !== i))}
+                        onClick={() => setAvailableFiles((prev) => prev.filter((_: any, index: number) => index !== i))}
                       >
                         <RiDeleteBin5Fill size={10} color="#ffffff" />
                       </div>
                     </div>
-                    <p className="text-xs text-green-600 my-2">{f.slice(90)}</p>
+                    <p className="text-xs text-green-600 my-2">{f.substring(0, 6) + ".pdf"}</p>
                   </div>
                 );
               })}

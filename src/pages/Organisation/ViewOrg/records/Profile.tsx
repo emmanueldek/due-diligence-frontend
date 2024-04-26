@@ -40,6 +40,8 @@ const Profile: React.FC<IOrgDataProfile> = ({ data }) => {
       }
       const data = await response.blob();
       const hrefUrl = URL.createObjectURL(data);
+      setLoading(false);
+
       window.open(hrefUrl, "_blank");
     } catch (error) {
       setLoading(false);
