@@ -80,34 +80,32 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
                 <tr key={i} className="">
                   {columns.map((col: Column, j) => {
                     return (
-                      <>
-                        <td
-                          key={j}
-                          className={`px-2 text-grey-500 py-2 ${col.field === "audFinancials" ? "text-[#144D98]" : ""}`}
-                        >
-                          {col.field === "lgrDocuments" ? (
-                            <div className="flex flex-col justify-start gap-3">
-                              {items.lgrDocuments &&
-                                items.lgrDocuments.map((item: string, i: number) => {
-                                  return (
-                                    <p
-                                      className="text-xs text-[#0029FD] text-left cursor-pointer"
-                                      onClick={() => downloadPdf(item)}
-                                      key={i}
-                                    >
-                                      {item}
-                                    </p>
-                                  );
-                                })}
-                            </div>
-                          ) : (
-                            // <Link to={`${items[col.field]}`}>
-                            //   <GrAttachment />
-                            // </Link>
-                            <>{items[col.field as keyof ILegalProps]}</>
-                          )}
-                        </td>
-                      </>
+                      <td
+                        key={j}
+                        className={`px-2 text-grey-500 py-2 ${col.field === "audFinancials" ? "text-[#144D98]" : ""}`}
+                      >
+                        {col.field === "lgrDocuments" ? (
+                          <div className="flex flex-col justify-start gap-3">
+                            {items.lgrDocuments &&
+                              items.lgrDocuments.map((item: string, i: number) => {
+                                return (
+                                  <p
+                                    className="text-xs text-[#0029FD] text-left cursor-pointer"
+                                    onClick={() => downloadPdf(item)}
+                                    key={i}
+                                  >
+                                    {item}
+                                  </p>
+                                );
+                              })}
+                          </div>
+                        ) : (
+                          // <Link to={`${items[col.field]}`}>
+                          //   <GrAttachment />
+                          // </Link>
+                          <>{items[col.field as keyof ILegalProps]}</>
+                        )}
+                      </td>
                     );
                   })}
                   <hr />
@@ -115,23 +113,6 @@ const Legal: React.FC<IDataLegalProps> = ({ data }) => {
               ))}
             </tbody>
           </table>
-          {/* <div>
-            <div>
-              <p className="font-[700] 2xl mt-5">Documents</p>
-              <hr className="border-grey-50 mt-2 mb-5" />
-            </div>
-            <div className="grid grid-cols-2 gap-5">
-              {newData?.map((item, i) => {
-                return (
-                  <button key={i} onClick={() => downloadPdf(item.lgrDocuments)}>
-                    <div className="bg-grey-100 rounded-xl w-full h-[128px] flex items-center justify-center">
-                      <IoDocumentAttachSharp size={40} color="#808080" />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div> */}
         </>
       )}
     </div>
