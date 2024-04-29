@@ -26,6 +26,7 @@ interface IOrganisationProps {
   year?: string;
   fillingStatus?: string;
   totalTaxLiability?: string;
+  lgrDocuments: string[];
 }
 
 interface IactionProps {
@@ -133,6 +134,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
     year: "",
     filingStatus: "",
     totalTaxLiability: "",
+    lgrDocuments: [],
   };
 
   const handleClose = () => {
@@ -146,7 +148,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
   const onSubmit = async (data: IOrganisationProps) => {
     const newData = {
       ...data,
-      lgrDocuments: file,
+      lgrDocuments: [...file],
     };
     if (dataTab !== null) {
       // Update existing entry in the dataList
