@@ -42,7 +42,7 @@ export interface ILegalProps {
   year?: string;
   filingStatus?: string;
   totalTaxLiability?: string;
-  lgrDocuments?: string;
+  lgrDocuments: string[];
 }
 export interface IContractProps {
   date?: string;

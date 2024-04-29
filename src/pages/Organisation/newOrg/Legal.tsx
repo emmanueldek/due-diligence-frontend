@@ -42,10 +42,8 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
   const { id } = useParams();
   const requestId = id || "";
   const [newNext, setNext] = useState(false);
-  const [file, setFile] = useState<Array<string>>([]);
   const [dataTab, setDataTab] = useState<number | null>(null);
   const [dataList, setDataList] = useState<IOrganisationProps[]>(data.legal || []);
-  const [check, setCheck] = useState<number | null>(null);
   const [open, setOpen] = useState<number | null>(null);
   const legalData = { legal: dataList };
   const [checkAdd, setCheckAdd] = useState(false);
@@ -202,7 +200,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
       if (checkAdd) {
         setCheckAdd(false);
         resetForm();
-        setFile([]);
+        setAvailableFiles([]);
       }
     } else if (dataTab === null && isDataExist) {
       toast.error("Data already exist");
@@ -244,19 +242,18 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
     let selectedData = dataList[index];
     // Set the form fields with data from the selected index
     setValues(selectedData);
-    setCheck(index);
     setDataTab(index); // Set the selected index
     console.log(selectedData);
     setAvailableFiles((prev: string[]) => [...prev, ...selectedData.lgrDocuments]);
   };
 
-  const handleDelete = (index: number) => {
-    // Remove the data entry from the dataList
-    const updatedDataList = [...dataList];
-    updatedDataList.splice(index, 1);
-    setDataList(updatedDataList);
-    setDataTab(null); // Clear the selected index
-  };
+  // const handleDelete = (index: number) => {
+  //   // Remove the data entry from the dataList
+  //   const updatedDataList = [...dataList];
+  //   updatedDataList.splice(index, 1);
+  //   setDataList(updatedDataList);
+  //   setDataTab(null); // Clear the selected index
+  // };
 
   const getError = (key: keyof IOrganisationProps) => {
     return touched[key] && errors[key];
