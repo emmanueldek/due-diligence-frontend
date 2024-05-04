@@ -170,7 +170,7 @@ const Legal: React.FC<IactionProps> = ({ next, prev, data, setData, execDocID, s
       //   }
       // });
       for (let i = 0; i <= dataList.length; i++) {
-        if (dataList[i].year === data.year) {
+        if (dataList[i]?.year === data?.year) {
           res = true;
           break;
         }
